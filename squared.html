@@ -413,6 +413,185 @@
             transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(255, 255, 255, 0.5);
         }
+
+        /* More Page Styles */
+        .more-screen {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            min-height: 100vh;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .more-header {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .more-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .more-tab {
+            background: none;
+            border: none;
+            font-size: 1.3em;
+            padding: 10px 5px;
+            cursor: pointer;
+            color: #999;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .more-tab.active {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .more-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #333;
+        }
+
+        .settings-section {
+            margin-bottom: 30px;
+        }
+
+        .setting-label {
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .username-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .username-input:focus {
+            outline: none;
+            border-color: #1E9FD8;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .toggle-label {
+            font-size: 1em;
+            color: #333;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 80px;
+            height: 32px;
+            background: #e0e0e0;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: 2px solid #333;
+        }
+
+        .toggle-switch.active {
+            background: #1E9FD8;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            border: 2px solid #333;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(48px);
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: auto repeat(5, 50px);
+            gap: 15px;
+            align-items: center;
+        }
+
+        .theme-row {
+            display: contents;
+        }
+
+        .theme-radio {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #333;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            background: white;
+        }
+
+        .theme-radio.selected::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            background: #333;
+            border-radius: 50%;
+        }
+
+        .theme-color {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .theme-color:hover {
+            transform: scale(1.1);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
+            padding: 10px;
+        }
+
+        .back-button:hover {
+            color: #1E9FD8;
+        }
     </style>
 </head>
 <body>
@@ -509,7 +688,7 @@
                 </div>
                 Tutorial
             </button>
-            <button class="menu-button" onclick="alert('More options coming soon!')">
+            <button class="menu-button" onclick="showMore()">
                 <div class="menu-icon">
                     <div class="menu-icon-square"></div>
                     <div class="menu-icon-square"></div>
@@ -518,6 +697,68 @@
                 </div>
                 More
             </button>
+        </div>
+    </div>
+
+    <div id="moreScreen" class="more-screen" style="display: none;">
+        <button class="back-button" onclick="showHome()">←</button>
+        
+        <h2 class="more-header">MORE</h2>
+        
+        <div class="more-tabs">
+            <button class="more-tab active" onclick="showSettingsTab()">settings</button>
+            <button class="more-tab" onclick="showAboutTab()">about</button>
+        </div>
+        
+        <div id="settingsTab">
+            <div class="settings-section">
+                <div class="setting-label">username</div>
+                <input type="text" class="username-input" id="usernameInput" value="{username}" placeholder="Enter username">
+            </div>
+            
+                       
+            <div class="settings-section">
+                <div class="setting-label">theme</div>
+                <div class="theme-grid">
+                    <!-- Row 1 -->
+                    <div class="theme-radio selected" onclick="selectTheme(0)"></div>
+                    <div class="theme-color" style="background: #7FD45E;" onclick="selectTheme(0)"></div>
+                    <div class="theme-color" style="background: #E8479D;" onclick="selectTheme(0)"></div>
+                    <div class="theme-color" style="background: #FFA826;" onclick="selectTheme(0)"></div>
+                    <div class="theme-color" style="background: #1E9FD8;" onclick="selectTheme(0)"></div>
+                    <div class="theme-color" style="background: #7E8FD4;" onclick="selectTheme(0)"></div>
+                    
+                    <!-- Row 2 -->
+                    <div class="theme-radio" onclick="selectTheme(1)"></div>
+                    <div class="theme-color" style="background: #F5A623;" onclick="selectTheme(1)"></div>
+                    <div class="theme-color" style="background: #7ED4D1;" onclick="selectTheme(1)"></div>
+                    <div class="theme-color" style="background: #EC8C99;" onclick="selectTheme(1)"></div>
+                    <div class="theme-color" style="background: #8FD47E;" onclick="selectTheme(1)"></div>
+                    <div class="theme-color" style="background: #C96565;" onclick="selectTheme(1)"></div>
+                    
+                    <!-- Row 3 -->
+                    <div class="theme-radio" onclick="selectTheme(2)"></div>
+                    <div class="theme-color" style="background: #6B9370;" onclick="selectTheme(2)"></div>
+                    <div class="theme-color" style="background: #B5D4A1;" onclick="selectTheme(2)"></div>
+                    <div class="theme-color" style="background: #A8CEE2;" onclick="selectTheme(2)"></div>
+                    <div class="theme-color" style="background: #D4C89E;" onclick="selectTheme(2)"></div>
+                    <div class="theme-color" style="background: #E8B4B8;" onclick="selectTheme(2)"></div>
+                    
+                    <!-- Row 4 -->
+                    <div class="theme-radio" onclick="selectTheme(3)"></div>
+                    <div class="theme-color" style="background: #2D3436;" onclick="selectTheme(3)"></div>
+                    <div class="theme-color" style="background: #4A5F8C;" onclick="selectTheme(3)"></div>
+                    <div class="theme-color" style="background: #B8C5E0;" onclick="selectTheme(3)"></div>
+                    <div class="theme-color" style="background: #F4E63D;" onclick="selectTheme(3)"></div>
+                    <div class="theme-color" style="background: #9BA653;" onclick="selectTheme(3)"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="aboutTab" style="display: none;">
+            <p>Squared - Pattern Matching Game</p>
+            <p>Version 1.0</p>
+            <p>Created by alaug</p>
         </div>
     </div>
 
@@ -556,7 +797,14 @@
     </div>
 
     <script>
-        const COLORS = ['#ffb3ba', '#bae1ff', '#baffc9', '#ffffba', '#e0bbff', '#b3f0ff', '#ffd4a3', '#c9c9ff'];
+        // Color themes matching the More page
+        const COLOR_THEMES = [
+            ['#7FD45E', '#E8479D', '#FFA826', '#1E9FD8', '#7E8FD4'], // Theme 0 - Default
+            ['#F5A623', '#7ED4D1', '#EC8C99', '#8FD47E', '#C96565'], // Theme 1
+            ['#6B9370', '#B5D4A1', '#A8CEE2', '#D4C89E', '#E8B4B8'], // Theme 2
+            ['#2D3436', '#4A5F8C', '#B8C5E0', '#F4E63D', '#9BA653']  // Theme 3
+        ];
+        
         const GRID_SIZE = 5;
         let grid = [];
         let pattern = [];
@@ -567,9 +815,50 @@
         let timer = null;
         let validSolutions = [];
         let hintSquare = null;
+        let selectedThemeIndex = 0;
+        let currentColors = COLOR_THEMES[0];
+
+        function showHome() {
+            document.getElementById('homeScreen').style.display = 'flex';
+            document.getElementById('gameContainer').style.display = 'none';
+            document.getElementById('moreScreen').style.display = 'none';
+            document.body.classList.remove('game-active');
+        }
+
+        function showMore() {
+            document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('moreScreen').style.display = 'block';
+        }
+
+        function showSettingsTab() {
+            document.querySelectorAll('.more-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('settingsTab').style.display = 'block';
+            document.getElementById('aboutTab').style.display = 'none';
+        }
+
+        function showAboutTab() {
+            document.querySelectorAll('.more-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('settingsTab').style.display = 'none';
+            document.getElementById('aboutTab').style.display = 'block';
+        }
+
+        function selectTheme(index) {
+            selectedThemeIndex = index;
+            currentColors = COLOR_THEMES[index];
+            document.querySelectorAll('.theme-radio').forEach((radio, i) => {
+                if (i === index) {
+                    radio.classList.add('selected');
+                } else {
+                    radio.classList.remove('selected');
+                }
+            });
+        }
 
         function showGame() {
             document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('moreScreen').style.display = 'none';
             document.getElementById('gameContainer').style.display = 'block';
             document.body.classList.add('game-active');
             startGame();
@@ -597,7 +886,7 @@
             // Generate random grid
             grid = [];
             for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
-                grid.push(COLORS[Math.floor(Math.random() * COLORS.length)]);
+                grid.push(currentColors[Math.floor(Math.random() * currentColors.length)]);
             }
 
             // Generate pattern and ensure at least one solution exists
@@ -615,7 +904,7 @@
             // Generate 4 random colors for the pattern
             pattern = [];
             for (let i = 0; i < 4; i++) {
-                pattern.push(COLORS[Math.floor(Math.random() * COLORS.length)]);
+                pattern.push(currentColors[Math.floor(Math.random() * currentColors.length)]);
             }
             
             // Pick a random starting position
