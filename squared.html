@@ -801,6 +801,8 @@
     </div>
 
     <div class="game-container" id="gameContainer" style="display: none;">
+        <button class="back-button" onclick="backToHome()">←</button>
+        
         <div id="gameScreen">
             <div class="top-section">
                 <div class="timer-section">
@@ -876,6 +878,11 @@
             document.getElementById('gameContainer').style.display = 'none';
             document.getElementById('moreScreen').style.display = 'none';
             document.body.classList.remove('game-active');
+        }
+
+        function backToHome() {
+            clearInterval(timer);
+            showHome();
         }
 
         function showMore() {
