@@ -116,7 +116,7 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 9px;
+            gap: 26px;
             margin-bottom: 20px;
             padding: 10px;
         }
@@ -217,6 +217,43 @@
             border-color: #ccc;
             color: #ccc;
             cursor: not-allowed;
+        }
+
+        .game-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-top: 3px solid #1E9FD8;
+            margin-top: 20px;
+        }
+
+        .action-item {
+            text-align: center;
+            padding: 20px 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .action-item:last-child {
+            border-right: none;
+        }
+
+        .action-item:hover {
+            background: #f5f5f5;
+        }
+
+        .action-count {
+            font-size: 2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .action-label {
+            font-size: 0.9em;
+            color: #999;
+            text-transform: lowercase;
         }
 
         .game-over {
@@ -756,9 +793,10 @@
         </div>
         
         <div id="aboutTab" style="display: none;">
-            <p>Squared - Pattern Matching Game</p>
-            <p>Version 1.0</p>
-            <p>Created by alaug</p>
+            <p style="margin-bottom: 20px;">created by: <strong>Austin Laugesen</strong></p>
+            <p style="margin-bottom: 20px;">email: <a href="mailto:alaug@outlook.com" style="color: #1E9FD8; text-decoration: none;">alaug@outlook.com</a></p>
+            <p style="margin-bottom: 20px; color: #999;">version: 1.0.0.0</p>
+            
         </div>
     </div>
 
@@ -771,7 +809,6 @@
                 
                 <div class="pattern-section">
                     <div class="pattern-container">
-                        <div class="pattern-label">Match</div>
                         <div class="pattern" id="pattern"></div>
                     </div>
                 </div>
@@ -785,7 +822,20 @@
 
             <div class="grid" id="grid"></div>
 
-            <button class="button" id="resetBtn" onclick="resetSelection()">Clear Selection</button>
+            <div class="game-actions">
+                <div class="action-item" onclick="useHint()">
+                    <div class="action-count"><span id="hintsCount">5</span></div>
+                    <div class="action-label">hints</div>
+                </div>
+                <div class="action-item" onclick="useSkip()">
+                    <div class="action-count"><span id="skipsCount">5</span></div>
+                    <div class="action-label">skips</div>
+                </div>
+                <div class="action-item" onclick="useClockStop()">
+                    <div class="action-count"><span id="clockStopsCount">5</span></div>
+                    <div class="action-label">clock stops</div>
+                </div>
+            </div>
         </div>
 
         <div id="gameOverScreen" style="display: none;" class="game-over">
@@ -817,6 +867,9 @@
         let hintSquare = null;
         let selectedThemeIndex = 0;
         let currentColors = COLOR_THEMES[0];
+        let hintsRemaining = 5;
+        let skipsRemaining = 5;
+        let clockStopsRemaining = 5;
 
         function showHome() {
             document.getElementById('homeScreen').style.display = 'flex';
@@ -869,6 +922,9 @@
             score = 0;
             timeLeft = 60;
             selectedSquares = [];
+            hintsRemaining = 5;
+            skipsRemaining = 5;
+            clockStopsRemaining = 5;
             
             document.getElementById('gameScreen').style.display = 'block';
             document.getElementById('gameOverScreen').style.display = 'none';
@@ -1291,6 +1347,42 @@
         function updateDisplay() {
             document.getElementById('timer').textContent = timeLeft;
             document.getElementById('score').textContent = score;
+            document.getElementById('hintsCount').textContent = hintsRemaining;
+            document.getElementById('skipsCount').textContent = skipsRemaining;
+            document.getElementById('clockStopsCount').textContent = clockStopsRemaining;
+        }
+
+        function useHint() {
+            if (hintsRemaining > 0 && validSolutions.length > 0) {
+                hintsRemaining--;
+                const randomSolution = validSolutions[Math.floor(Math.random() * validSolutions.length)];
+                hintSquare = randomSolution[0];
+                updateSquareDisplay();
+                updateDisplay();
+                
+                // Clear hint after 3 seconds
+                setTimeout(() => {
+                    hintSquare = null;
+                    updateSquareDisplay();
+                }, 3000);
+            }
+        }
+
+        function useSkip() {
+            if (skipsRemaining > 0) {
+                skipsRemaining--;
+                level++;
+                updateDisplay();
+                generateLevel();
+            }
+        }
+
+        function useClockStop() {
+            if (clockStopsRemaining > 0) {
+                clockStopsRemaining--;
+                timeLeft += 10; // Add 10 seconds
+                updateDisplay();
+            }
         }
     </script>
 </body>
