@@ -223,7 +223,6 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 0;
-            border-top: 3px solid #1E9FD8;
             margin-top: 20px;
         }
 
@@ -231,8 +230,13 @@
             text-align: center;
             padding: 20px 10px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
             border-right: 1px solid #e0e0e0;
+            border-top: 3px solid #1E9FD8;
+        }
+
+        .action-item.depleted {
+            border-top: 3px solid transparent;
         }
 
         .action-item:last-child {
@@ -825,15 +829,15 @@
             <div class="grid" id="grid"></div>
 
             <div class="game-actions">
-                <div class="action-item" onclick="useHint()">
+                <div class="action-item" id="hintsAction" onclick="useHint()">
                     <div class="action-count"><span id="hintsCount">5</span></div>
                     <div class="action-label">hints</div>
                 </div>
-                <div class="action-item" onclick="useSkip()">
+                <div class="action-item" id="skipsAction" onclick="useSkip()">
                     <div class="action-count"><span id="skipsCount">5</span></div>
                     <div class="action-label">skips</div>
                 </div>
-                <div class="action-item" onclick="useClockStop()">
+                <div class="action-item" id="clockStopsAction" onclick="useClockStop()">
                     <div class="action-count"><span id="clockStopsCount">5</span></div>
                     <div class="action-label">clock stops</div>
                 </div>
@@ -1357,6 +1361,29 @@
             document.getElementById('hintsCount').textContent = hintsRemaining;
             document.getElementById('skipsCount').textContent = skipsRemaining;
             document.getElementById('clockStopsCount').textContent = clockStopsRemaining;
+            
+            // Update border visibility based on remaining counts
+            const hintsAction = document.getElementById('hintsAction');
+            const skipsAction = document.getElementById('skipsAction');
+            const clockStopsAction = document.getElementById('clockStopsAction');
+            
+            if (hintsRemaining === 0) {
+                hintsAction.classList.add('depleted');
+            } else {
+                hintsAction.classList.remove('depleted');
+            }
+            
+            if (skipsRemaining === 0) {
+                skipsAction.classList.add('depleted');
+            } else {
+                skipsAction.classList.remove('depleted');
+            }
+            
+            if (clockStopsRemaining === 0) {
+                clockStopsAction.classList.add('depleted');
+            } else {
+                clockStopsAction.classList.remove('depleted');
+            }
         }
 
         function useHint() {
