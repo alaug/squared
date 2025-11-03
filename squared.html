@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squared - Pattern Matching Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 650px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #b8a4d4;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            font-weight: 300;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #888;
+        }
+
+        .level {
+            color: #b8a4d4;
+        }
+
+        .timer {
+            color: #ffb3ba;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            color: #bae1ff;
+        }
+
+        .pattern-container {
+            margin-bottom: 25px;
+        }
+
+        .pattern-label {
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #888;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pattern {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .pattern-square {
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 9px;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .square {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .square:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .square.selected {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(184, 164, 212, 0.5);
+        }
+
+        .square.hint {
+            animation: gentleGlow 2s ease-in-out infinite;
+        }
+
+        .square.wrong {
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        @keyframes gentleGlow {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.4), 0 0 0 3px rgba(255, 215, 0, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 45px rgba(255, 215, 0, 0.6), 0 0 0 3px rgba(255, 215, 0, 0.7);
+            }
+        }
+
+        .selection-info {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 0.95em;
+            font-weight: 500;
+            min-height: 25px;
+            margin-bottom: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .message.show {
+            opacity: 1;
+        }
+
+        .message.success {
+            color: #baffc9;
+        }
+
+        .message.error {
+            color: #ffb3ba;
+        }
+
+        .button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            font-weight: 500;
+            border: 2px solid #b8a4d4;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            color: #b8a4d4;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .button:hover {
+            background: #b8a4d4;
+            color: white;
+        }
+
+        .button:disabled {
+            background: #f0f0f0;
+            border-color: #ccc;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .game-over {
+            text-align: center;
+        }
+
+        .game-over h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .final-score {
+            font-size: 2em;
+            color: #27ae60;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>SQUARED</h1>
+        
+        <div id="gameScreen">
+            <div class="stats">
+                <div class="level">Level <span id="level">1</span></div>
+                <div class="score">Score <span id="score">0</span></div>
+            </div>
+
+            <div class="pattern-container">
+                <div class="pattern-label">Match this pattern</div>
+                <div class="pattern" id="pattern"></div>
+            </div>
+
+            <div class="timer"><span id="timer">20</span>s</div>
+
+            <div class="message" id="message"></div>
+
+            <div class="grid" id="grid"></div>
+
+            <button class="button" id="resetBtn" onclick="resetSelection()">Clear Selection</button>
+        </div>
+
+        <div id="gameOverScreen" style="display: none;" class="game-over">
+            <h2>Game Over!</h2>
+            <div class="final-score">Final Score: <span id="finalScore">0</span></div>
+            <div style="margin-bottom: 20px;">Level Reached: <span id="finalLevel">1</span></div>
+            <button class="button" onclick="startGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const COLORS = ['#ffb3ba', '#bae1ff', '#baffc9', '#ffffba', '#e0bbff', '#b3f0ff', '#ffd4a3', '#c9c9ff'];
+        const GRID_SIZE = 10;
+        let grid = [];
+        let pattern = [];
+        let selectedSquares = [];
+        let level = 1;
+        let score = 0;
+        let timeLeft = 20;
+        let timer = null;
+        let validSolutions = [];
+        let hintSquare = null;
+
+        function startGame() {
+            level = 1;
+            score = 0;
+            timeLeft = 20;
+            selectedSquares = [];
+            
+            document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('gameOverScreen').style.display = 'none';
+            
+            updateDisplay();
+            generateLevel();
+        }
+
+        function generateLevel() {
+            clearInterval(timer);
+            selectedSquares = [];
+            hintSquare = null;
+            timeLeft = Math.max(20 - Math.floor(level / 3), 10); // Decrease time as level increases, min 10 seconds
+            
+            // Generate random grid
+            grid = [];
+            for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+                grid.push(COLORS[Math.floor(Math.random() * COLORS.length)]);
+            }
+
+            // Generate pattern and ensure at least one solution exists
+            generatePatternWithSolution();
+            
+            console.log('Valid solutions found:', validSolutions.length);
+            
+            renderGrid();
+            renderPattern();
+            updateDisplay();
+            startTimer();
+        }
+
+        function generatePatternWithSolution() {
+            // Generate 4 random colors for the pattern
+            pattern = [];
+            for (let i = 0; i < 4; i++) {
+                pattern.push(COLORS[Math.floor(Math.random() * COLORS.length)]);
+            }
+            
+            // Pick a random starting position
+            let startRow = Math.floor(Math.random() * (GRID_SIZE - 1));
+            let startCol = Math.floor(Math.random() * (GRID_SIZE - 1));
+            
+            // Create a guaranteed solution (2x2 grouped pattern)
+            const guaranteedSolution = [
+                startRow * GRID_SIZE + startCol,
+                startRow * GRID_SIZE + startCol + 1,
+                (startRow + 1) * GRID_SIZE + startCol,
+                (startRow + 1) * GRID_SIZE + startCol + 1
+            ];
+            
+            // Place the pattern on the grid at this location
+            guaranteedSolution.forEach((idx, i) => {
+                grid[idx] = pattern[i];
+            });
+            
+            // Find all valid solutions (including the guaranteed one)
+            validSolutions = findAllSolutions();
+            
+            console.log('Guaranteed solution placed at:', guaranteedSolution);
+        }
+
+        function findGroupedPattern(startIdx) {
+            const row = Math.floor(startIdx / GRID_SIZE);
+            const col = startIdx % GRID_SIZE;
+            const directions = [
+                [0, 1], [1, 0], [0, -1], [-1, 0]  // right, down, left, up
+            ];
+            
+            const pattern = [grid[startIdx]];
+            let currentRow = row;
+            let currentCol = col;
+            
+            for (let i = 0; i < 3; i++) {
+                const validMoves = directions.filter(([dr, dc]) => {
+                    const newRow = currentRow + dr;
+                    const newCol = currentCol + dc;
+                    return newRow >= 0 && newRow < GRID_SIZE && newCol >= 0 && newCol < GRID_SIZE;
+                });
+                
+                if (validMoves.length > 0) {
+                    const [dr, dc] = validMoves[Math.floor(Math.random() * validMoves.length)];
+                    currentRow += dr;
+                    currentCol += dc;
+                    pattern.push(grid[currentRow * GRID_SIZE + currentCol]);
+                }
+            }
+            
+            return pattern;
+        }
+
+        function findEquidistantPattern(startIdx) {
+            const row = Math.floor(startIdx / GRID_SIZE);
+            const col = startIdx % GRID_SIZE;
+            
+            // Try to create an equidistant pattern (horizontal, vertical, or diagonal)
+            const directions = [
+                [0, 1], [1, 0], [1, 1], [1, -1]  // horizontal, vertical, diagonal right, diagonal left
+            ];
+            
+            const validDir = directions.find(([dr, dc]) => {
+                const lastRow = row + dr * 3;
+                const lastCol = col + dc * 3;
+                return lastRow >= 0 && lastRow < GRID_SIZE && lastCol >= 0 && lastCol < GRID_SIZE;
+            });
+            
+            if (validDir) {
+                const [dr, dc] = validDir;
+                return [
+                    grid[startIdx],
+                    grid[(row + dr) * GRID_SIZE + (col + dc)],
+                    grid[(row + dr * 2) * GRID_SIZE + (col + dc * 2)],
+                    grid[(row + dr * 3) * GRID_SIZE + (col + dc * 3)]
+                ];
+            }
+            
+            // Fallback to grouped if equidistant not possible
+            return findGroupedPattern(startIdx);
+        }
+
+        function findAllSolutions() {
+            const solutions = [];
+            
+            // Check all possible starting positions
+            for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+                if (grid[i] === pattern[0]) {
+                    // Check grouped patterns
+                    const groupedSolutions = findGroupedSolutions(i);
+                    solutions.push(...groupedSolutions);
+                    
+                    // Check equidistant patterns
+                    const equidistantSolutions = findEquidistantSolutions(i);
+                    solutions.push(...equidistantSolutions);
+                }
+            }
+            
+            return solutions;
+        }
+
+        function findGroupedSolutions(startIdx) {
+            const solutions = [];
+            const visited = new Set();
+            
+            function dfs(idx, path) {
+                if (path.length === 4) {
+                    if (path.every((p, i) => grid[p] === pattern[i])) {
+                        const sortedPath = [...path].sort((a, b) => a - b).join(',');
+                        if (!visited.has(sortedPath)) {
+                            visited.add(sortedPath);
+                            solutions.push([...path]);
+                        }
+                    }
+                    return;
+                }
+                
+                const row = Math.floor(idx / GRID_SIZE);
+                const col = idx % GRID_SIZE;
+                const neighbors = [
+                    [row - 1, col], [row + 1, col], [row, col - 1], [row, col + 1]
+                ];
+                
+                for (const [r, c] of neighbors) {
+                    if (r >= 0 && r < GRID_SIZE && c >= 0 && c < GRID_SIZE) {
+                        const nextIdx = r * GRID_SIZE + c;
+                        if (!path.includes(nextIdx) && grid[nextIdx] === pattern[path.length]) {
+                            dfs(nextIdx, [...path, nextIdx]);
+                        }
+                    }
+                }
+            }
+            
+            dfs(startIdx, [startIdx]);
+            return solutions;
+        }
+
+        function findEquidistantSolutions(startIdx) {
+            const solutions = [];
+            const row = Math.floor(startIdx / GRID_SIZE);
+            const col = startIdx % GRID_SIZE;
+            
+            // Check all possible directions and distances
+            for (let dr = -3; dr <= 3; dr++) {
+                for (let dc = -3; dc <= 3; dc++) {
+                    if (dr === 0 && dc === 0) continue;
+                    
+                    const indices = [];
+                    let valid = true;
+                    
+                    for (let i = 0; i < 4; i++) {
+                        const r = row + dr * i;
+                        const c = col + dc * i;
+                        
+                        if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE) {
+                            valid = false;
+                            break;
+                        }
+                        
+                        const idx = r * GRID_SIZE + c;
+                        if (grid[idx] !== pattern[i]) {
+                            valid = false;
+                            break;
+                        }
+                        
+                        indices.push(idx);
+                    }
+                    
+                    if (valid) {
+                        solutions.push(indices);
+                    }
+                }
+            }
+            
+            return solutions;
+        }
+
+        function renderGrid() {
+            const gridElement = document.getElementById('grid');
+            gridElement.innerHTML = '';
+            
+            grid.forEach((color, index) => {
+                const square = document.createElement('div');
+                square.className = 'square';
+                square.style.backgroundColor = color;
+                square.dataset.index = index;
+                square.onclick = () => selectSquare(index);
+                gridElement.appendChild(square);
+            });
+        }
+
+        function renderPattern() {
+            const patternElement = document.getElementById('pattern');
+            patternElement.innerHTML = '';
+            
+            pattern.forEach(color => {
+                const square = document.createElement('div');
+                square.className = 'pattern-square';
+                square.style.backgroundColor = color;
+                patternElement.appendChild(square);
+            });
+        }
+
+        function selectSquare(index) {
+            if (selectedSquares.includes(index)) {
+                selectedSquares = selectedSquares.filter(i => i !== index);
+            } else if (selectedSquares.length < 4) {
+                selectedSquares.push(index);
+            }
+            
+            updateSquareDisplay();
+            updateDisplay();
+            
+            if (selectedSquares.length === 4) {
+                checkSolution();
+            }
+        }
+
+        function updateSquareDisplay() {
+            document.querySelectorAll('.square').forEach(square => {
+                const index = parseInt(square.dataset.index);
+                square.classList.remove('selected', 'hint');
+                if (selectedSquares.includes(index)) {
+                    square.classList.add('selected');
+                } else if (hintSquare === index) {
+                    square.classList.add('hint');
+                }
+            });
+        }
+
+        function checkSolution() {
+            const selectedColors = selectedSquares.map(i => grid[i]);
+            const patternMatch = selectedColors.every((color, i) => color === pattern[i]);
+            
+            if (!patternMatch) {
+                // Subtle shake on wrong squares
+                selectedSquares.forEach(idx => {
+                    const square = document.querySelector(`[data-index="${idx}"]`);
+                    square.classList.add('wrong');
+                    setTimeout(() => square.classList.remove('wrong'), 400);
+                });
+                
+                setTimeout(() => {
+                    selectedSquares = [];
+                    updateSquareDisplay();
+                    updateDisplay();
+                }, 500);
+                return;
+            }
+            
+            // Check if it's a valid solution (grouped or equidistant)
+            const isValid = validSolutions.some(solution => {
+                return solution.every((idx, i) => selectedSquares[i] === idx);
+            }) || isGrouped(selectedSquares) || isEquidistant(selectedSquares);
+            
+            if (isValid) {
+                showMessage('Perfect! ✓', 'success');
+                score += 40; // 10 points per square
+                level++;
+                setTimeout(() => {
+                    showMessage('', '');
+                    generateLevel();
+                }, 1500);
+            } else {
+                // Subtle shake on wrong pattern type
+                selectedSquares.forEach(idx => {
+                    const square = document.querySelector(`[data-index="${idx}"]`);
+                    square.classList.add('wrong');
+                    setTimeout(() => square.classList.remove('wrong'), 400);
+                });
+                
+                setTimeout(() => {
+                    selectedSquares = [];
+                    updateSquareDisplay();
+                    updateDisplay();
+                }, 500);
+            }
+        }
+
+        function isGrouped(indices) {
+            if (indices.length !== 4) return false;
+            
+            const positions = indices.map(i => ({
+                row: Math.floor(i / GRID_SIZE),
+                col: i % GRID_SIZE
+            }));
+            
+            // Check if all squares are adjacent to at least one other square in the selection
+            for (let i = 0; i < positions.length; i++) {
+                let hasAdjacent = false;
+                for (let j = 0; j < positions.length; j++) {
+                    if (i !== j) {
+                        const rowDiff = Math.abs(positions[i].row - positions[j].row);
+                        const colDiff = Math.abs(positions[i].col - positions[j].col);
+                        if ((rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1)) {
+                            hasAdjacent = true;
+                            break;
+                        }
+                    }
+                }
+                if (!hasAdjacent) return false;
+            }
+            
+            return true;
+        }
+
+        function isEquidistant(indices) {
+            if (indices.length !== 4) return false;
+            
+            const positions = indices.map(i => ({
+                row: Math.floor(i / GRID_SIZE),
+                col: i % GRID_SIZE
+            }));
+            
+            // Calculate distances
+            const dr1 = positions[1].row - positions[0].row;
+            const dc1 = positions[1].col - positions[0].col;
+            
+            // Check if all subsequent distances are the same
+            for (let i = 2; i < positions.length; i++) {
+                const dr = positions[i].row - positions[i-1].row;
+                const dc = positions[i].col - positions[i-1].col;
+                if (dr !== dr1 || dc !== dc1) return false;
+            }
+            
+            return true;
+        }
+
+        function resetSelection() {
+            selectedSquares = [];
+            updateSquareDisplay();
+            updateDisplay();
+            showMessage('', '');
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+                
+                // Show hint every 5 seconds (at 15s, 10s, 5s)
+                if (timeLeft % 5 === 0 && timeLeft > 0 && validSolutions.length > 0) {
+                    console.log('Showing hint at', timeLeft, 'seconds');
+                    showHint();
+                }
+                
+                if (timeLeft <= 0) {
+                    gameOver();
+                }
+            }, 1000);
+        }
+
+        function showHint() {
+            // Pick a random valid solution and highlight the first square
+            const randomSolution = validSolutions[Math.floor(Math.random() * validSolutions.length)];
+            hintSquare = randomSolution[0];
+            console.log('Hint square:', hintSquare, 'from solution:', randomSolution);
+            updateSquareDisplay();
+        }
+
+        function gameOver() {
+            clearInterval(timer);
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('gameOverScreen').style.display = 'block';
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('finalLevel').textContent = level;
+        }
+
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            if (text) {
+                messageEl.textContent = text;
+                messageEl.className = 'message ' + type + ' show';
+            } else {
+                messageEl.classList.remove('show');
+                setTimeout(() => {
+                    messageEl.textContent = '';
+                    messageEl.className = 'message';
+                }, 300);
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('level').textContent = level;
+            document.getElementById('timer').textContent = timeLeft;
+            document.getElementById('score').textContent = score;
+        }
+
+        // Start the game when page loads
+        startGame();
+    </script>
+</body>
+</html>
