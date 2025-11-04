@@ -1302,7 +1302,6 @@
                 return;
             }
             
-            debugger;
             // Check if it's a valid solution ( equidistant)
             const isValid = isEquidistant(selectedSquares);
             
@@ -1330,33 +1329,6 @@
             }
         }
 
-        function isGrouped(indices) {
-            if (indices.length !== 4) return false;
-            
-            const positions = indices.map(i => ({
-                row: Math.floor(i / GRID_SIZE),
-                col: i % GRID_SIZE
-            }));
-            
-            // Check if all squares are adjacent to at least one other square in the selection
-            for (let i = 0; i < positions.length; i++) {
-                let hasAdjacent = false;
-                for (let j = 0; j < positions.length; j++) {
-                    if (i !== j) {
-                        const rowDiff = Math.abs(positions[i].row - positions[j].row);
-                        const colDiff = Math.abs(positions[i].col - positions[j].col);
-                        if ((rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1)) {
-                            hasAdjacent = true;
-                            break;
-                        }
-                    }
-                }
-                if (!hasAdjacent) return false;
-            }
-            
-            return true;
-        }
-
         function isEquidistant(indices) {
             if (indices.length !== 4) return false;
             
@@ -1366,18 +1338,17 @@
             }));
             
             /* TODO - fix the bug in isEquidistant*/
-            /*// Calculate distances
-            const dr1 = positions[1].row - positions[0].row;
-            const dc1 = positions[1].col - positions[0].col;
+            // Calculate distances
+            // 0 and 1 are row one
+            // 2 and 3 are row two
+            const deltaTopRightToTopLeft = positions[1].col - positions[0].col;
+            const deltaBottomRightToBottomLeft = positions[3].col - positions[2].col;
+            const deltaBottomLeftToTopLeft = positions[2].row - positions[0].row;
+            const deltaBottomRightToTopRight = positions[3].row - positions[1].row;
             
-            // Check if all subsequent distances are the same
-            for (let i = 2; i < positions.length; i++) {
-                const dr = positions[i].row - positions[i-1].row;
-                const dc = positions[i].col - positions[i-1].col;
-                if (dr !== dr1 || dc !== dc1) return false;
-            }*/
-            
-            return true;
+            return (deltaTopRightToTopLeft === deltaBottomRightToBottomLeft) &&
+                   (deltaBottomLeftToTopLeft === deltaBottomRightToTopRight &&
+                     (deltaTopRightToTopLeft === deltaBottomLeftToTopLeft));
         }
 
         function resetSelection() {
