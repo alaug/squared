@@ -1256,10 +1256,37 @@
         }
 
         function checkSolution() {
-            const selectedColors = selectedSquares.map(i => grid[i]);
-            const patternMatch = selectedColors.every((color, i) => color === pattern[i]);
+            if (selectedSquares.length !== 4) return;
             
-            if (!patternMatch) {
+            // Get positions and colors of selected squares
+            const positions = selectedSquares.map(idx => ({
+                idx: idx,
+                row: Math.floor(idx / GRID_SIZE),
+                col: idx % GRID_SIZE,
+                color: grid[idx]
+            }));
+            
+            // Sort positions to get top-left, top-right, bottom-left, bottom-right order
+            positions.sort((a, b) => {
+                if (a.row !== b.row) return a.row - b.row; // Sort by row first
+                return a.col - b.col; // Then by column
+            });
+            
+            // Pattern array is: [top-left, top-right, bottom-left, bottom-right]
+            // So we need to reorder sorted positions to match this pattern layout
+            const topLeft = positions[0];
+            const topRight = positions[1];
+            const bottomLeft = positions[2];
+            const bottomRight = positions[3];
+            
+            // Check if colors match the pattern in the correct positions
+            const colorsMatch = 
+                grid[topLeft.idx] === pattern[0] &&
+                grid[topRight.idx] === pattern[1] &&
+                grid[bottomLeft.idx] === pattern[2] &&
+                grid[bottomRight.idx] === pattern[3];
+            
+            if (!colorsMatch) {
                 // Subtle shake on wrong squares
                 selectedSquares.forEach(idx => {
                     const square = document.querySelector(`[data-index="${idx}"]`);
@@ -1275,10 +1302,9 @@
                 return;
             }
             
-            // Check if it's a valid solution (grouped or equidistant)
-            const isValid = validSolutions.some(solution => {
-                return solution.every((idx, i) => selectedSquares[i] === idx);
-            }) || isGrouped(selectedSquares) || isEquidistant(selectedSquares);
+            debugger;
+            // Check if it's a valid solution ( equidistant)
+            const isValid = isEquidistant(selectedSquares);
             
             if (isValid) {
                 showMessage('Perfect! ✓', 'success');
@@ -1339,7 +1365,8 @@
                 col: i % GRID_SIZE
             }));
             
-            // Calculate distances
+            /* TODO - fix the bug in isEquidistant*/
+            /*// Calculate distances
             const dr1 = positions[1].row - positions[0].row;
             const dc1 = positions[1].col - positions[0].col;
             
@@ -1348,7 +1375,7 @@
                 const dr = positions[i].row - positions[i-1].row;
                 const dc = positions[i].col - positions[i-1].col;
                 if (dr !== dr1 || dc !== dc1) return false;
-            }
+            }*/
             
             return true;
         }
