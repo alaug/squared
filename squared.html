@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Squared - Pattern Matching Game</title>
+    <title>Squared - The Game!</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <style>
         * {
@@ -26,13 +26,35 @@
             background: #f5f5f5;
         }
 
+        .game-container-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+        }
+
         .game-container {
             background: white;
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 650px;
             width: 100%;
+        }
+
+        .game-back-button {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
+            padding: 10px;
+            z-index: 10;
+        }
+
+        .game-back-button:hover {
+            color: #1E9FD8;
         }
 
         h1 {
@@ -459,16 +481,36 @@
         }
 
         /* More Page Styles */
+        .more-screen-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
         .more-screen {
             background: white;
             width: 100%;
-            max-width: 500px;
-            min-height: 600px;
             padding: 30px;
             box-sizing: border-box;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            position: relative;
+            min-height: 600px;
+        }
+
+        .more-back-button {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
+            padding: 10px;
+        }
+
+        .more-back-button:hover {
+            color: #1E9FD8;
         }
 
         .more-header {
@@ -626,8 +668,8 @@
 
         .back-button {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 10px;
+            left: 10px;
             background: none;
             border: none;
             font-size: 1.5em;
@@ -747,10 +789,11 @@
         </div>
     </div>
 
-    <div id="moreScreen" class="more-screen" style="display: none;">
-        <button class="back-button" onclick="showHome()">←</button>
+    <div id="moreScreen" class="more-screen-wrapper" style="display: none;">
+        <button class="more-back-button" onclick="showHome()">←</button>
         
-        <h2 class="more-header">MORE</h2>
+        <div class="more-screen">
+            <h2 class="more-header">MORE</h2>
         
         <div class="more-tabs">
             <button class="more-tab active" onclick="showSettingsTab()">settings</button>
@@ -808,12 +851,14 @@
             <p style="margin-bottom: 20px; color: #999;">version: 1.0.0.0</p>
             
         </div>
+        </div>
     </div>
 
-    <div class="game-container" id="gameContainer" style="display: none;">
-        <button class="back-button" onclick="backToHome()">←</button>
+    <div id="gameContainer" class="game-container-wrapper" style="display: none;">
+        <button class="game-back-button" onclick="backToHome()">←</button>
         
-        <div id="gameScreen">
+        <div class="game-container">
+            <div id="gameScreen">
             <div class="top-section">
                 <div class="timer-section">
                     <div class="timer"><span id="timer">60</span>s</div>
@@ -855,6 +900,7 @@
             <div class="final-score">Final Score: <span id="finalScore">0</span></div>
             <div style="margin-bottom: 20px;">Level Reached: <span id="finalLevel">1</span></div>
             <button class="button" onclick="startGame()">Play Again</button>
+        </div>
         </div>
     </div>
 
