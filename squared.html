@@ -1303,7 +1303,7 @@
             }
             
             // Check if it's a valid solution ( equidistant)
-            const isValid = isEquidistant(selectedSquares);
+            const isValid = isEquidistant(topLeft, topRight, bottomLeft, bottomRight);
             
             if (isValid) {
                 showMessage('Perfect! ✓', 'success');
@@ -1329,23 +1329,18 @@
             }
         }
 
-        function isEquidistant(indices) {
-            if (indices.length !== 4) return false;
-            
-            const positions = indices.map(i => ({
-                row: Math.floor(i / GRID_SIZE),
-                col: i % GRID_SIZE
-            }));
-            
+        function isEquidistant(topLeft, topRight, bottomLeft, bottomRight) {
+            if (!topLeft || !topRight || !bottomLeft || !bottomRight) return false;
+          
             /* TODO - fix the bug in isEquidistant*/
             // Calculate distances
             // 0 and 1 are row one
             // 2 and 3 are row two
-            const deltaTopRightToTopLeft = positions[1].col - positions[0].col;
-            const deltaBottomRightToBottomLeft = positions[3].col - positions[2].col;
-            const deltaBottomLeftToTopLeft = positions[2].row - positions[0].row;
-            const deltaBottomRightToTopRight = positions[3].row - positions[1].row;
-            
+            const deltaTopRightToTopLeft = topRight.col - topLeft.col;
+            const deltaBottomRightToBottomLeft = bottomRight.col - bottomLeft.col;
+            const deltaBottomLeftToTopLeft = bottomLeft.row - topLeft.row;
+            const deltaBottomRightToTopRight = bottomRight.row - topRight.row;
+
             return (deltaTopRightToTopLeft === deltaBottomRightToBottomLeft) &&
                    (deltaBottomLeftToTopLeft === deltaBottomRightToTopRight &&
                      (deltaTopRightToTopLeft === deltaBottomLeftToTopLeft));
