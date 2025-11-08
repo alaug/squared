@@ -82,7 +82,7 @@
 
         .timer {
             color: #ffb3ba;
-            font-size: 1.3em;
+            font-size: 1.105em;
             font-weight: 600;
         }
 
@@ -100,7 +100,7 @@
 
         .score {
             color: #bae1ff;
-            font-size: 1.3em;
+            font-size: 1.105em;
             font-weight: 600;
         }
 
@@ -414,43 +414,48 @@
         }
 
         .decorative-pattern.top-right {
-            top: 30px;
-            right: 60px;
+            top: 5px;
+            right: 90px;
         }
 
         .decorative-pattern.top-right-small {
-            top: 50px;
-            right: 30px;
+            top: 20px;
+            right: 20px;
             grid-template-columns: repeat(2, 20px);
             grid-template-rows: repeat(2, 20px);
         }
 
         .decorative-pattern.bottom-left {
-            bottom: 100px;
-            left: 30px;
+            bottom: 320px;
+            left: 0px;
+            grid-template-columns: repeat(2, 20px);
+            grid-template-rows: repeat(2, 20px);
         }
 
         .decorative-pattern.bottom-left-small {
-            bottom: 50px;
-            left: 10px;
+            bottom: 20px;
+            left: 50px;
             grid-template-columns: repeat(2, 20px);
             grid-template-rows: repeat(2, 20px);
         }
 
         .decorative-pattern.middle-left {
-            top: 50%;
-            left: 50px;
-            transform: translateY(-50%);
+            top: 20px;
+            left: 10px; 
+            grid-template-columns: repeat(2, 20px);
+            grid-template-rows: repeat(2, 20px);
         }
 
         .decorative-pattern.middle-right {
-            top: 40%;
-            right: 40px;
+            top: 28%;
+            right: 20px;
+            grid-template-columns: repeat(2, 30px);
+            grid-template-rows: repeat(2, 30px);
         }
 
         .decorative-pattern.bottom-right {
-            bottom: 150px;
-            right: 80px;
+            bottom: 45px;
+            right: 20px;
             grid-template-columns: repeat(2, 25px);
             grid-template-rows: repeat(2, 25px);
         }
@@ -623,9 +628,10 @@
 
         .theme-grid {
             display: grid;
-            grid-template-columns: auto repeat(5, 50px);
-            gap: 15px;
+            grid-template-columns: auto repeat(5, minmax(25px, 1fr));
+            gap: 10px;
             align-items: center;
+            max-width: 100%;
         }
 
         .theme-row {
@@ -640,6 +646,7 @@
             cursor: pointer;
             position: relative;
             background: white;
+            flex-shrink: 0;
         }
 
         .theme-radio.selected::after {
@@ -655,8 +662,9 @@
         }
 
         .theme-color {
-            width: 50px;
-            height: 50px;
+            width: 80%;
+            aspect-ratio: 1;
+            max-width: 40px;
             border-radius: 5px;
             cursor: pointer;
             transition: transform 0.2s;
@@ -680,6 +688,44 @@
 
         .back-button:hover {
             color: #1E9FD8;
+        }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+            .grid {
+                max-width: 86.25%; /* 75% * 1.15 = 86.25% for 15% bigger squares */
+                gap: 15px; /* Reduced gap for better spacing on mobile */
+            }
+
+            .logo-container {
+                gap: 12px;
+                margin-bottom: 90px;
+            }
+
+            .logo-icon {
+                grid-template-columns: repeat(2, 28px);
+                grid-template-rows: repeat(2, 28px);
+                gap: 2.8px;
+            }
+
+            .logo-square.hollow::after {
+                width: 11.2px;
+                height: 11.2px;
+            }
+
+            .home-screen h1 {
+                font-size: 2.5em;
+                letter-spacing: 1px;
+            }
+
+            .menu {
+                width: 220px;
+            }
+
+            .menu-button {
+                padding: 15px 25px;
+                font-size: 1em;
+            }
         }
     </style>
 </head>
@@ -855,7 +901,7 @@
             <div id="gameScreen">
             <div class="top-section">
                 <div class="timer-section">
-                    <div class="timer"><span id="timer">60</span>s</div>
+                    <div class="timer">time <span id="timer">60</span>s</div>
                 </div>
                 
                 <div class="pattern-section">
@@ -865,7 +911,7 @@
                 </div>
                 
                 <div class="score-section">
-                    <div class="score"><span id="score">0</span></div>
+                    <div class="score">score <span id="score">0</span></div>
                 </div>
             </div>
 
@@ -1348,13 +1394,7 @@
             timer = setInterval(() => {
                 timeLeft--;
                 updateDisplay();
-                
-                // Show hint every 5 seconds (at 15s, 10s, 5s)
-                if (timeLeft % 5 === 0 && timeLeft > 0 && validSolutions.length > 0) {
-                    console.log('Showing hint at', timeLeft, 'seconds');
-                    showHint();
-                }
-                
+                                               
                 if (timeLeft <= 0) {
                     gameOver();
                 }
