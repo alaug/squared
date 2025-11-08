@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Squared - The Game!</title>
+    <title>Squared</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <style>
         * {
@@ -138,7 +138,7 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 26px;
+            gap: 22px;
             margin-bottom: 20px;
             padding: 10px;
             max-width: 75%;
@@ -319,14 +319,14 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
 
         .logo-icon {
             display: grid;
-            grid-template-columns: repeat(2, 40px);
-            grid-template-rows: repeat(2, 40px);
-            gap: 4px;
+            grid-template-columns: repeat(2, 36px);
+            grid-template-rows: repeat(2, 36px);
+            gap: 3.6px;
         }
 
         .logo-square {
@@ -341,8 +341,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 16px;
-            height: 16px;
+            width: 14.4px;
+            height: 14.4px;
             background: white;
             border-radius: 2px;
         }
@@ -687,12 +687,6 @@
     <div id="homeScreen" class="home-screen">
         <div class="decorative-squares">
             <!-- Top right patterns -->
-            <div class="decorative-pattern top-right">
-                <div class="decorative-square"></div>
-                <div class="decorative-square"></div>
-                <div class="decorative-square"></div>
-                <div class="decorative-square"></div>
-            </div>
             <div class="decorative-pattern top-right-small">
                 <div class="decorative-square"></div>
                 <div class="decorative-square"></div>
@@ -898,7 +892,6 @@
         <div id="gameOverScreen" style="display: none;" class="game-over">
             <h2>Game Over!</h2>
             <div class="final-score">Final Score: <span id="finalScore">0</span></div>
-            <div style="margin-bottom: 20px;">Level Reached: <span id="finalLevel">1</span></div>
             <button class="button" onclick="startGame()">Play Again</button>
         </div>
         </div>
@@ -917,7 +910,6 @@
         let grid = [];
         let pattern = [];
         let selectedSquares = [];
-        let level = 1;
         let score = 0;
         let timeLeft = 60;
         let timer = null;
@@ -981,7 +973,6 @@
         }
 
         function startGame() {
-            level = 1;
             score = 0;
             timeLeft = 60;
             selectedSquares = [];
@@ -1298,7 +1289,7 @@
                     selectedSquares = [];
                     updateSquareDisplay();
                     updateDisplay();
-                }, 500);
+                }, 50);
                 return;
             }
             
@@ -1308,11 +1299,11 @@
             if (isValid) {
                 showMessage('Perfect! ✓', 'success');
                 score += 40; // 10 points per square
-                level++;
+                
                 setTimeout(() => {
                     showMessage('', '');
                     generateLevel();
-                }, 1500);
+                }, 300);
             } else {
                 // Subtle shake on wrong pattern type
                 selectedSquares.forEach(idx => {
@@ -1383,7 +1374,7 @@
             document.getElementById('gameScreen').style.display = 'none';
             document.getElementById('gameOverScreen').style.display = 'block';
             document.getElementById('finalScore').textContent = score;
-            document.getElementById('finalLevel').textContent = level;
+            
         }
 
         function showMessage(text, type) {
@@ -1450,7 +1441,7 @@
         function useSkip() {
             if (skipsRemaining > 0) {
                 skipsRemaining--;
-                level++;
+                
                 updateDisplay();
                 generateLevel();
             }
