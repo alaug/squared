@@ -968,6 +968,11 @@
         let hintsRemaining = 5;
         let skipsRemaining = 5;
         let clockStopsRemaining = 5;
+        let prevLeftX = -1;
+        let prevTopY = -1;
+        let prevRightX = -1;
+        let infiniteLoopMitigationIndex = 0;
+        let currentSolutionCoords = [];
 
         function showHome() {
             document.getElementById('homeScreen').style.display = 'flex';
@@ -1027,6 +1032,12 @@
             hintsRemaining = 5;
             skipsRemaining = 5;
             clockStopsRemaining = 5;
+            prevLeftX = -1;
+            prevTopY = -1;
+            prevRightX = -1;
+            infiniteLoopMitigationIndex = 0;
+            currentSolutionCoords = [];
+            validSolutions = [];
             
             document.getElementById('gameScreen').style.display = 'block';
             document.getElementById('gameOverScreen').style.display = 'none';
@@ -1047,198 +1058,243 @@
                 grid.push(currentColors[Math.floor(Math.random() * currentColors.length)]);
             }
 
-            // Generate pattern and ensure at least one solution exists
-            generatePatternWithSolution();
-            
-            console.log('Valid solutions found:', validSolutions.length);
-            
+            // Generate pattern using board square corners
+            getNewPatternToSolve(-1);
+
             renderGrid();
             renderPattern();
             updateDisplay();
             startTimer();
         }
 
-        function generatePatternWithSolution() {
-            // Generate 4 random colors for the pattern
-            pattern = [];
-            for (let i = 0; i < 4; i++) {
-                pattern.push(currentColors[Math.floor(Math.random() * currentColors.length)]);
+        // Port of Board.GetNewPatternToSolve from the original game to select square corners without repeats.
+        function getNewPatternToSolve(sideLength = -1) {
+            if (grid.length !== GRID_SIZE * GRID_SIZE) {
+                pattern = [];
+                currentSolutionCoords = [];
+                validSolutions = [];
+                return;
             }
-            
-            // Pick a random starting position
-            let startRow = Math.floor(Math.random() * (GRID_SIZE - 1));
-            let startCol = Math.floor(Math.random() * (GRID_SIZE - 1));
-            
-            // Create a guaranteed solution (2x2 grouped pattern)
-            const guaranteedSolution = [
-                startRow * GRID_SIZE + startCol,
-                startRow * GRID_SIZE + startCol + 1,
-                (startRow + 1) * GRID_SIZE + startCol,
-                (startRow + 1) * GRID_SIZE + startCol + 1
-            ];
-            
-            // Place the pattern on the grid at this location
-            guaranteedSolution.forEach((idx, i) => {
-                grid[idx] = pattern[i];
-            });
-            
-            // Find all valid solutions (including the guaranteed one)
-            validSolutions = findAllSolutions();
-            
-            console.log('Guaranteed solution placed at:', guaranteedSolution);
-        }
 
-        function findGroupedPattern(startIdx) {
-            const row = Math.floor(startIdx / GRID_SIZE);
-            const col = startIdx % GRID_SIZE;
-            const directions = [
-                [0, 1], [1, 0], [0, -1], [-1, 0]  // right, down, left, up
-            ];
-            
-            const pattern = [grid[startIdx]];
-            let currentRow = row;
-            let currentCol = col;
-            
-            for (let i = 0; i < 3; i++) {
-                const validMoves = directions.filter(([dr, dc]) => {
-                    const newRow = currentRow + dr;
-                    const newCol = currentCol + dc;
-                    return newRow >= 0 && newRow < GRID_SIZE && newCol >= 0 && newCol < GRID_SIZE;
-                });
-                
-                if (validMoves.length > 0) {
-                    const [dr, dc] = validMoves[Math.floor(Math.random() * validMoves.length)];
-                    currentRow += dr;
-                    currentCol += dc;
-                    pattern.push(grid[currentRow * GRID_SIZE + currentCol]);
-                }
-            }
-            
-            return pattern;
-        }
+            let internalSideLength = sideLength;
+            let startX = 0;
+            let startY = 0;
+            let leftX = 0;
+            let rightX = 0;
+            let topY = 0;
+            let bottomY = 0;
+            let shouldBreak = false;
+            let loopCount = 0;
 
-        function findEquidistantPattern(startIdx) {
-            const row = Math.floor(startIdx / GRID_SIZE);
-            const col = startIdx % GRID_SIZE;
-            
-            // Try to create an equidistant pattern (horizontal, vertical, or diagonal)
-            const directions = [
-                [0, 1], [1, 0], [1, 1], [1, -1]  // horizontal, vertical, diagonal right, diagonal left
-            ];
-            
-            const validDir = directions.find(([dr, dc]) => {
-                const lastRow = row + dr * 3;
-                const lastCol = col + dc * 3;
-                return lastRow >= 0 && lastRow < GRID_SIZE && lastCol >= 0 && lastCol < GRID_SIZE;
-            });
-            
-            if (validDir) {
-                const [dr, dc] = validDir;
-                return [
-                    grid[startIdx],
-                    grid[(row + dr) * GRID_SIZE + (col + dc)],
-                    grid[(row + dr * 2) * GRID_SIZE + (col + dc * 2)],
-                    grid[(row + dr * 3) * GRID_SIZE + (col + dc * 3)]
-                ];
-            }
-            
-            // Fallback to grouped if equidistant not possible
-            return findGroupedPattern(startIdx);
-        }
+            do {
+                do {
+                    startX = randomIntInclusive(0, GRID_SIZE - 1);
+                    startY = randomIntInclusive(0, GRID_SIZE - 1);
 
-        function findAllSolutions() {
-            const solutions = [];
-            
-            // Check all possible starting positions
-            for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
-                if (grid[i] === pattern[0]) {
-                    // Check grouped patterns
-                    const groupedSolutions = findGroupedSolutions(i);
-                    solutions.push(...groupedSolutions);
-                    
-                    // Check equidistant patterns
-                    const equidistantSolutions = findEquidistantSolutions(i);
-                    solutions.push(...equidistantSolutions);
-                }
-            }
-            
-            return solutions;
-        }
-
-        function findGroupedSolutions(startIdx) {
-            const solutions = [];
-            const visited = new Set();
-            
-            function dfs(idx, path) {
-                if (path.length === 4) {
-                    if (path.every((p, i) => grid[p] === pattern[i])) {
-                        const sortedPath = [...path].sort((a, b) => a - b).join(',');
-                        if (!visited.has(sortedPath)) {
-                            visited.add(sortedPath);
-                            solutions.push([...path]);
-                        }
+                    if (sideLength === -1) {
+                        internalSideLength = randomIntInclusive(1, Math.max(1, GRID_SIZE - startX - 1));
+                    } else if (sideLength === 0) {
+                        internalSideLength = randomIntInclusive(2, Math.max(2, GRID_SIZE - 2));
+                    } else {
+                        internalSideLength = 1;
                     }
+
+                    const mitigation = infiniteLoopMitigation(loopCount, {
+                        startX,
+                        startY,
+                        sideLength: internalSideLength,
+                        shouldBreak
+                    });
+                    startX = mitigation.startX;
+                    startY = mitigation.startY;
+                    internalSideLength = mitigation.sideLength;
+                    shouldBreak = mitigation.shouldBreak;
+
+                    if (!shouldBreak) {
+                        const xValues = getLeftAndRightXValues(startX, sideLength, internalSideLength);
+                        leftX = xValues.leftX;
+                        rightX = xValues.rightX;
+                        internalSideLength = xValues.sideLength;
+                    } else {
+                        const xValues = getLeftAndRightXValuesSimple(startX, internalSideLength);
+                        leftX = xValues.leftX;
+                        rightX = xValues.rightX;
+                    }
+
+                    const yValues = getTopAndBottomYValues(startY, internalSideLength);
+                    topY = yValues.topY;
+                    bottomY = yValues.bottomY;
+
+                    loopCount++;
+                } while (
+                    areCoordinatesOutsideBoundsOfBoard(bottomY, rightX, leftX, topY) ||
+                    areCoordinatesSameAsLastRound(leftX, topY, rightX)
+                );
+
+                const topLeftIdx = topY * GRID_SIZE + leftX;
+                const topRightIdx = topY * GRID_SIZE + rightX;
+                const bottomLeftIdx = bottomY * GRID_SIZE + leftX;
+                const bottomRightIdx = bottomY * GRID_SIZE + rightX;
+
+                if (!areOneOrMoreSquaresAnimating()) {
+                    infiniteLoopMitigationIndex = 0;
+                    prevLeftX = leftX;
+                    prevTopY = topY;
+                    prevRightX = rightX;
+
+                    pattern = [
+                        grid[topLeftIdx],
+                        grid[topRightIdx],
+                        grid[bottomLeftIdx],
+                        grid[bottomRightIdx]
+                    ];
+
+                    currentSolutionCoords = [topLeftIdx, topRightIdx, bottomLeftIdx, bottomRightIdx];
+                    validSolutions = [currentSolutionCoords.slice()];
                     return;
                 }
-                
-                const row = Math.floor(idx / GRID_SIZE);
-                const col = idx % GRID_SIZE;
-                const neighbors = [
-                    [row - 1, col], [row + 1, col], [row, col - 1], [row, col + 1]
-                ];
-                
-                for (const [r, c] of neighbors) {
-                    if (r >= 0 && r < GRID_SIZE && c >= 0 && c < GRID_SIZE) {
-                        const nextIdx = r * GRID_SIZE + c;
-                        if (!path.includes(nextIdx) && grid[nextIdx] === pattern[path.length]) {
-                            dfs(nextIdx, [...path, nextIdx]);
-                        }
-                    }
-                }
-            }
-            
-            dfs(startIdx, [startIdx]);
-            return solutions;
+            } while (true);
         }
 
-        function findEquidistantSolutions(startIdx) {
-            const solutions = [];
-            const row = Math.floor(startIdx / GRID_SIZE);
-            const col = startIdx % GRID_SIZE;
-            
-            // Check all possible directions and distances
-            for (let dr = -3; dr <= 3; dr++) {
-                for (let dc = -3; dc <= 3; dc++) {
-                    if (dr === 0 && dc === 0) continue;
-                    
-                    const indices = [];
-                    let valid = true;
-                    
-                    for (let i = 0; i < 4; i++) {
-                        const r = row + dr * i;
-                        const c = col + dc * i;
-                        
-                        if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE) {
-                            valid = false;
-                            break;
-                        }
-                        
-                        const idx = r * GRID_SIZE + c;
-                        if (grid[idx] !== pattern[i]) {
-                            valid = false;
-                            break;
-                        }
-                        
-                        indices.push(idx);
-                    }
-                    
-                    if (valid) {
-                        solutions.push(indices);
-                    }
+        function randomIntInclusive(min, max) {
+            if (max < min) {
+                return min;
+            }
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function infiniteLoopMitigation(loopCount, state) {
+            let { startX, startY, sideLength, shouldBreak } = state;
+            if (loopCount !== 0 && loopCount % 5 === 0) {
+                shouldBreak = false;
+                switch (getIndexForInfiniteLoopMitigationTechnique()) {
+                    case 0:
+                        startX = 0;
+                        startY = 0;
+                        break;
+                    case 1:
+                        startX = GRID_SIZE - 1;
+                        startY = 0;
+                        break;
+                    case 2:
+                        startX = 0;
+                        startY = GRID_SIZE - 1;
+                        break;
+                    case 3:
+                        startX = GRID_SIZE - 1;
+                        startY = GRID_SIZE - 1;
+                        break;
+                    case 4:
+                        startX = 0;
+                        startY = 0;
+                        sideLength = 1;
+                        break;
+                    case 5:
+                        startX = GRID_SIZE - 1;
+                        startY = 0;
+                        sideLength = 1;
+                        shouldBreak = true;
+                        break;
+                    case 6:
+                        startX = 0;
+                        startY = GRID_SIZE - 1;
+                        sideLength = 1;
+                        shouldBreak = true;
+                        break;
+                    case 7:
+                        startX = GRID_SIZE - 1;
+                        startY = GRID_SIZE - 1;
+                        sideLength = 1;
+                        shouldBreak = true;
+                        break;
+                    case 8:
+                        startX = Math.floor(GRID_SIZE / 2);
+                        startY = Math.floor(GRID_SIZE / 2);
+                        sideLength = 1;
+                        shouldBreak = true;
+                        break;
+                    default:
+                        break;
                 }
             }
-            
-            return solutions;
+            return { startX, startY, sideLength, shouldBreak };
+        }
+
+        function getIndexForInfiniteLoopMitigationTechnique() {
+            const current = infiniteLoopMitigationIndex;
+            infiniteLoopMitigationIndex = infiniteLoopMitigationIndex === 8 ? 0 : infiniteLoopMitigationIndex + 1;
+            return current;
+        }
+
+        function getLeftAndRightXValues(startX, originalSideLength, sideLength) {
+            let leftX;
+            let rightX;
+            let adjustedSideLength = Math.max(1, sideLength);
+
+            if ((GRID_SIZE / 2) < startX) {
+                rightX = startX;
+                if (originalSideLength === 0) {
+                    while (rightX - adjustedSideLength < 0 && adjustedSideLength > 1) {
+                        adjustedSideLength--;
+                    }
+                }
+                leftX = rightX - adjustedSideLength;
+            } else {
+                leftX = startX;
+                if (originalSideLength === 0) {
+                    while (leftX + adjustedSideLength >= GRID_SIZE && adjustedSideLength > 1) {
+                        adjustedSideLength--;
+                    }
+                }
+                rightX = leftX + adjustedSideLength;
+            }
+
+            return {
+                leftX,
+                rightX,
+                sideLength: Math.max(1, adjustedSideLength)
+            };
+        }
+
+        function getLeftAndRightXValuesSimple(startX, sideLength) {
+            const adjustedSideLength = Math.max(1, sideLength);
+            if ((GRID_SIZE / 2) < startX) {
+                const rightX = startX;
+                const leftX = rightX - adjustedSideLength;
+                return { leftX, rightX };
+            }
+            const leftX = startX;
+            const rightX = leftX + adjustedSideLength;
+            return { leftX, rightX };
+        }
+
+        function getTopAndBottomYValues(startY, sideLength) {
+            const adjustedSideLength = Math.max(1, sideLength);
+            if ((GRID_SIZE / 2) < startY) {
+                const bottomY = startY;
+                const topY = bottomY - adjustedSideLength;
+                return { topY, bottomY };
+            }
+            const topY = startY;
+            const bottomY = topY + adjustedSideLength;
+            return { topY, bottomY };
+        }
+
+        function areCoordinatesOutsideBoundsOfBoard(bottomY, rightX, leftX, topY) {
+            return bottomY >= GRID_SIZE ||
+                rightX >= GRID_SIZE ||
+                leftX < 0 ||
+                topY < 0;
+        }
+
+        function areCoordinatesSameAsLastRound(newLeftX, newTopY, newRightX) {
+            return newLeftX === prevLeftX &&
+                newTopY === prevTopY &&
+                newRightX === prevRightX;
+        }
+
+        function areOneOrMoreSquaresAnimating() {
+            return false;
         }
 
         function renderGrid() {
