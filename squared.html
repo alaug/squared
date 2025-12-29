@@ -463,38 +463,39 @@
 
         .tutorial-grid-wrapper {
             margin-top: 30px;
+            border-top: 1px solid #eee;
         }
 
         .tutorial-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 14px;
-            padding: 10px 20px;
-            justify-items: center;
+            gap: 22px;
+            width: 75%;
+            margin: 0 auto;
+            padding: 10px;
         }
 
         .tutorial-square {
             aspect-ratio: 1;
-            border-radius: 6px;
-            width: 70px;
-            max-width: 100%;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 4px;
+            width: 100%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             position: relative;
         }
 
         .tutorial-square.highlight {
             transform: scale(1.05);
-            box-shadow: 0 6px 18px rgba(184, 164, 212, 0.45);
+            box-shadow: 0 6px 16px rgba(184, 164, 212, 0.45), 0 0 0 3px rgba(184, 164, 212, 0.35);
         }
 
         .tutorial-square.highlight::after {
             content: '';
             position: absolute;
-            inset: -6px;
-            border-radius: 10px;
-            border: 3px solid rgba(184, 164, 212, 0.6);
-            box-shadow: 0 0 18px rgba(184, 164, 212, 0.55);
+            inset: -3px;
+            border-radius: 7px;
+            border: 2px solid rgba(184, 164, 212, 0.6);
+            box-shadow: 0 0 12px rgba(184, 164, 212, 0.45);
         }
 
         .tutorial-message {
@@ -915,11 +916,12 @@
             }
 
             .tutorial-grid {
-                gap: 10px;
+                gap: 15px;
+                width: 86.25%;
             }
 
             .tutorial-square {
-                width: 56px;
+                width: 100%;
             }
 
             .tutorial-pack {
@@ -1040,20 +1042,22 @@
     <div id="tutorialScreen" class="tutorial-screen" style="display: none;">
         <div class="tutorial-container">
             <button class="back-button" onclick="showHome()">←</button>
-            <div class="tutorial-title">Basics Tutorial</div>
+            <div class="tutorial-title">Tutorial</div>
 
             <div class="tutorial-top">
                 <div class="tutorial-description">
                     <p>Given a pattern, look for four squares in the board that match the colors and form the corners of a perfect square.</p>
+                    <br/>
                     <p>The tutorial alternates between tightly grouped squares and equidistant squares so you can see both possible solution styles.</p>
                 </div>
+                
+            </div>
+
+            <div class="tutorial-grid-wrapper">
                 <div class="tutorial-pattern-block">
                     <div class="pattern-label">Pattern to match</div>
                     <div class="pattern" id="tutorialPattern"></div>
                 </div>
-            </div>
-
-            <div class="tutorial-grid-wrapper">
                 <div id="tutorialMessage" class="tutorial-message"></div>
                 <div id="tutorialGrid" class="tutorial-grid"></div>
             </div>
