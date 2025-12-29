@@ -465,6 +465,14 @@
         .decorative-square {
             background: #bae1ff;
             border-radius: 2px;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .decorative-square.hidden {
+            transform: scale(0);
+            opacity: 0;
         }
 
         .start-button {
@@ -973,12 +981,17 @@
         let prevRightX = -1;
         let infiniteLoopMitigationIndex = 0;
         let currentSolutionCoords = [];
+        let decorativeSquares = [];
+        let hiddenDecorativeSquares = [];
+        let decorativeTimer = null;
+        let decorativeTimerCount = 0;
 
         function showHome() {
             document.getElementById('homeScreen').style.display = 'flex';
             document.getElementById('gameContainer').style.display = 'none';
             document.getElementById('moreScreen').style.display = 'none';
             document.body.classList.remove('game-active');
+            startDecorativeTimer();
         }
 
         function backToHome() {
@@ -989,6 +1002,7 @@
         function showMore() {
             document.getElementById('homeScreen').style.display = 'none';
             document.getElementById('moreScreen').style.display = 'block';
+            stopDecorativeTimer();
         }
 
         function showSettingsTab() {
@@ -1017,11 +1031,88 @@
             });
         }
 
+        function initDecorativeSquares() {
+            decorativeSquares = Array.from(document.querySelectorAll('.decorative-square'));
+            hiddenDecorativeSquares = [];
+            decorativeTimerCount = 0;
+            decorativeSquares.forEach(square => {
+                square.classList.remove('hidden');
+                square.dataset.visible = 'true';
+            });
+        }
+
+        function startDecorativeTimer() {
+            if (decorativeSquares.length === 0) {
+                initDecorativeSquares();
+            }
+            if (decorativeTimer) {
+                return;
+            }
+            decorativeTimer = setInterval(decorativeTimerTick, 750);
+        }
+
+        function stopDecorativeTimer() {
+            if (decorativeTimer) {
+                clearInterval(decorativeTimer);
+                decorativeTimer = null;
+            }
+        }
+
+        function hideDecorativeSquare(square) {
+            if (!square || square.dataset.visible === 'false') {
+                return;
+            }
+            square.classList.add('hidden');
+            square.dataset.visible = 'false';
+            hiddenDecorativeSquares.push(square);
+        }
+
+        function showDecorativeSquare(square) {
+            if (!square) {
+                return;
+            }
+            square.classList.remove('hidden');
+            square.dataset.visible = 'true';
+        }
+
+        function decorativeTimerTick() {
+            if (decorativeSquares.length === 0) {
+                return;
+            }
+
+            let index = Math.floor(Math.random() * decorativeSquares.length);
+            let square = decorativeSquares[index];
+
+            if (index % 2 === 0) {
+                if (decorativeTimerCount % 2 === 0) {
+                    if (index === 0) {
+                        index = Math.min(index + 1, decorativeSquares.length - 1);
+                    } else {
+                        index = index - 1;
+                    }
+                    square = decorativeSquares[index];
+                    decorativeTimerCount = 0;
+                }
+
+                if (square.dataset.visible === 'true') {
+                    hideDecorativeSquare(square);
+                }
+            } else {
+                if (hiddenDecorativeSquares.length > 0) {
+                    const next = hiddenDecorativeSquares.shift();
+                    showDecorativeSquare(next);
+                }
+            }
+
+            decorativeTimerCount++;
+        }
+
         function showGame() {
             document.getElementById('homeScreen').style.display = 'none';
             document.getElementById('moreScreen').style.display = 'none';
             document.getElementById('gameContainer').style.display = 'block';
             document.body.classList.add('game-active');
+            stopDecorativeTimer();
             startGame();
         }
 
@@ -1552,6 +1643,11 @@
                 updateDisplay();
             }
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDecorativeSquares();
+            startDecorativeTimer();
+        });
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
