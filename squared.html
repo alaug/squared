@@ -406,6 +406,136 @@
             border-radius: 2px;
         }
 
+        .tutorial-screen {
+            background: #f5f5f5;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .tutorial-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .tutorial-title {
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            font-size: 1.4em;
+            color: #b8a4d4;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .tutorial-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tutorial-description {
+            flex: 1;
+            text-align: left;
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .tutorial-pattern-block {
+            min-width: 160px;
+            text-align: center;
+        }
+
+        .tutorial-pattern-block .pattern-square {
+            width: 28px;
+            height: 28px;
+        }
+
+        .tutorial-grid-wrapper {
+            margin-top: 30px;
+        }
+
+        .tutorial-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            padding: 10px 20px;
+            justify-items: center;
+        }
+
+        .tutorial-square {
+            aspect-ratio: 1;
+            border-radius: 6px;
+            width: 70px;
+            max-width: 100%;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .tutorial-square.highlight {
+            transform: scale(1.05);
+            box-shadow: 0 6px 18px rgba(184, 164, 212, 0.45);
+        }
+
+        .tutorial-square.highlight::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 10px;
+            border: 3px solid rgba(184, 164, 212, 0.6);
+            box-shadow: 0 0 18px rgba(184, 164, 212, 0.55);
+        }
+
+        .tutorial-message {
+            margin-top: 20px;
+            text-align: center;
+            color: #888;
+            font-weight: 500;
+            min-height: 24px;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .tutorial-packs {
+            margin-top: 35px;
+            border-top: 1px solid #eee;
+            padding-top: 25px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .tutorial-pack {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .tutorial-pack-title {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #333;
+            text-align: right;
+        }
+
+        .tutorial-pack-description {
+            color: #666;
+            line-height: 1.5;
+            text-align: left;
+        }
+
         .decorative-squares {
             position: absolute;
             inset: -40px;
@@ -762,6 +892,43 @@
                 padding: 15px 25px;
                 font-size: 1em;
             }
+
+            .tutorial-screen {
+                padding: 20px 16px;
+            }
+
+            .tutorial-container {
+                padding: 24px;
+            }
+
+            .tutorial-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .tutorial-pattern-block {
+                width: 100%;
+            }
+
+            .tutorial-description {
+                font-size: 0.9em;
+            }
+
+            .tutorial-grid {
+                gap: 10px;
+            }
+
+            .tutorial-square {
+                width: 56px;
+            }
+
+            .tutorial-pack {
+                grid-template-columns: 1fr;
+            }
+
+            .tutorial-pack-title {
+                text-align: left;
+            }
         }
     </style>
 </head>
@@ -848,7 +1015,7 @@
                     </div>
                     Stats
                 </button>
-                <button class="menu-button" onclick="alert('Tutorial coming soon!')">
+                <button class="menu-button" onclick="showTutorial()">
                     <div class="menu-icon">
                         <div class="menu-icon-square"></div>
                         <div class="menu-icon-square"></div>
@@ -866,6 +1033,44 @@
                     </div>
                     More
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tutorialScreen" class="tutorial-screen" style="display: none;">
+        <div class="tutorial-container">
+            <button class="back-button" onclick="showHome()">←</button>
+            <div class="tutorial-title">Basics Tutorial</div>
+
+            <div class="tutorial-top">
+                <div class="tutorial-description">
+                    <p>Given a pattern, look for four squares in the board that match the colors and form the corners of a perfect square.</p>
+                    <p>The tutorial alternates between tightly grouped squares and equidistant squares so you can see both possible solution styles.</p>
+                </div>
+                <div class="tutorial-pattern-block">
+                    <div class="pattern-label">Pattern to match</div>
+                    <div class="pattern" id="tutorialPattern"></div>
+                </div>
+            </div>
+
+            <div class="tutorial-grid-wrapper">
+                <div id="tutorialMessage" class="tutorial-message"></div>
+                <div id="tutorialGrid" class="tutorial-grid"></div>
+            </div>
+
+            <div class="tutorial-packs">
+                <div class="tutorial-pack">
+                    <div class="tutorial-pack-title">Hints</div>
+                    <div class="tutorial-pack-description">Reveal a helpful square within the current pattern so you can lock in on the right spot faster.</div>
+                </div>
+                <div class="tutorial-pack">
+                    <div class="tutorial-pack-title">Skips</div>
+                    <div class="tutorial-pack-description">Move on to a brand new pattern with no penalty if the current board feels tricky or crowded.</div>
+                </div>
+                <div class="tutorial-pack">
+                    <div class="tutorial-pack-title">Clock Stops</div>
+                    <div class="tutorial-pack-description">Pause the countdown timer long enough to finish the pattern without pressure.</div>
+                </div>
             </div>
         </div>
     </div>
@@ -994,6 +1199,7 @@
         ];
         
         const GRID_SIZE = 5;
+        const TUTORIAL_GRID_SIZE = 5;
         let grid = [];
         let pattern = [];
         let selectedSquares = [];
@@ -1016,12 +1222,24 @@
         let hiddenDecorativeSquares = [];
         let decorativeTimer = null;
         let decorativeTimerCount = 0;
+        let tutorialGrid = [];
+        let tutorialPattern = [];
+        let tutorialSquares = [];
+        let tutorialCurrentSolutionCoords = [];
+        let tutorialTimer = null;
+        let tutorialAnimationCount = 0;
+        let tutorialPrevLeftX = -1;
+        let tutorialPrevTopY = -1;
+        let tutorialPrevRightX = -1;
+        let tutorialInfiniteLoopIndex = 0;
 
         function showHome() {
             document.getElementById('homeScreen').style.display = 'flex';
             document.getElementById('gameContainer').style.display = 'none';
             document.getElementById('moreScreen').style.display = 'none';
+            document.getElementById('tutorialScreen').style.display = 'none';
             document.body.classList.remove('game-active');
+            stopTutorialAnimation();
             startDecorativeTimer();
         }
 
@@ -1032,8 +1250,21 @@
 
         function showMore() {
             document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'none';
             document.getElementById('moreScreen').style.display = 'block';
+            document.getElementById('tutorialScreen').style.display = 'none';
             stopDecorativeTimer();
+            stopTutorialAnimation();
+        }
+
+        function showTutorial() {
+            document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'none';
+            document.getElementById('moreScreen').style.display = 'none';
+            document.getElementById('tutorialScreen').style.display = 'flex';
+            document.body.classList.add('game-active');
+            stopDecorativeTimer();
+            startTutorial();
         }
 
         function showSettingsTab() {
@@ -1138,12 +1369,304 @@
             decorativeTimerCount++;
         }
 
+        function startTutorial() {
+            stopTutorialAnimation();
+
+            tutorialAnimationCount = 0;
+            tutorialPrevLeftX = -1;
+            tutorialPrevTopY = -1;
+            tutorialPrevRightX = -1;
+            tutorialInfiniteLoopIndex = 0;
+            tutorialPattern = [];
+            tutorialCurrentSolutionCoords = [];
+
+            tutorialGrid = [];
+            for (let i = 0; i < TUTORIAL_GRID_SIZE * TUTORIAL_GRID_SIZE; i++) {
+                tutorialGrid.push(currentColors[Math.floor(Math.random() * currentColors.length)]);
+            }
+
+            renderTutorialGrid();
+            tutorialPickSolution();
+
+            tutorialTimer = setInterval(() => {
+                tutorialPickSolution();
+            }, 4500);
+        }
+
+        function stopTutorialAnimation() {
+            if (tutorialTimer) {
+                clearInterval(tutorialTimer);
+                tutorialTimer = null;
+            }
+            tutorialAnimationCount = 0;
+            tutorialPrevLeftX = -1;
+            tutorialPrevTopY = -1;
+            tutorialPrevRightX = -1;
+            tutorialCurrentSolutionCoords = [];
+            if (tutorialSquares.length > 0) {
+                tutorialSquares.forEach(square => square.classList.remove('highlight'));
+            }
+            const message = document.getElementById('tutorialMessage');
+            if (message) {
+                message.style.opacity = 0;
+                message.textContent = '';
+            }
+            const patternElement = document.getElementById('tutorialPattern');
+            if (patternElement) {
+                patternElement.innerHTML = '';
+            }
+        }
+
+        function renderTutorialGrid() {
+            const gridElement = document.getElementById('tutorialGrid');
+            if (!gridElement) {
+                return;
+            }
+            gridElement.innerHTML = '';
+            tutorialSquares = [];
+
+            tutorialGrid.forEach(color => {
+                const square = document.createElement('div');
+                square.className = 'tutorial-square';
+                square.style.backgroundColor = color;
+                gridElement.appendChild(square);
+                tutorialSquares.push(square);
+            });
+        }
+
+        function renderTutorialPattern() {
+            const patternElement = document.getElementById('tutorialPattern');
+            if (!patternElement) {
+                return;
+            }
+            patternElement.innerHTML = '';
+            tutorialPattern.forEach(color => {
+                const square = document.createElement('div');
+                square.className = 'pattern-square';
+                square.style.backgroundColor = color;
+                patternElement.appendChild(square);
+            });
+        }
+
+        function tutorialPickSolution() {
+            if (tutorialGrid.length === 0) {
+                return;
+            }
+
+            const sideLength = (tutorialAnimationCount % 2 === 0) ? 0 : 2;
+            tutorialGetNewPatternToSolve(sideLength);
+            renderTutorialPattern();
+            highlightTutorialSquares();
+            updateTutorialMessage(sideLength);
+            tutorialAnimationCount++;
+        }
+
+        function highlightTutorialSquares() {
+            if (tutorialSquares.length === 0) {
+                return;
+            }
+
+            tutorialSquares.forEach(square => square.classList.remove('highlight'));
+            tutorialCurrentSolutionCoords.forEach(index => {
+                if (tutorialSquares[index]) {
+                    tutorialSquares[index].classList.add('highlight');
+                }
+            });
+        }
+
+        function updateTutorialMessage(sideLength) {
+            const message = document.getElementById('tutorialMessage');
+            if (!message) {
+                return;
+            }
+
+            let text = '';
+            if (tutorialCurrentSolutionCoords.length === 0) {
+                message.style.opacity = 0;
+                message.textContent = text;
+                return;
+            }
+
+            if (sideLength === 0) {
+                text = 'Grouped squares share edges and form a tight 2×2 corner.';
+            } else {
+                text = 'Equidistant squares stretch into a larger outline while keeping perfect spacing.';
+            }
+
+            message.textContent = text;
+            message.style.opacity = 1;
+        }
+
+        function tutorialGetNewPatternToSolve(sideLength) {
+            if (tutorialGrid.length !== TUTORIAL_GRID_SIZE * TUTORIAL_GRID_SIZE) {
+                tutorialPattern = [];
+                tutorialCurrentSolutionCoords = [];
+                return;
+            }
+
+            let internalSideLength = sideLength;
+            let startX = 0;
+            let startY = 0;
+            let leftX = 0;
+            let rightX = 0;
+            let topY = 0;
+            let bottomY = 0;
+            let shouldBreak = false;
+            let loopCount = 0;
+
+            do {
+                do {
+                    startX = randomIntInclusive(0, TUTORIAL_GRID_SIZE - 1);
+                    startY = randomIntInclusive(0, TUTORIAL_GRID_SIZE - 1);
+
+                    if (sideLength === -1) {
+                        internalSideLength = randomIntInclusive(1, Math.max(1, TUTORIAL_GRID_SIZE - startX - 1));
+                    } else if (sideLength === 0) {
+                        internalSideLength = randomIntInclusive(2, Math.max(2, TUTORIAL_GRID_SIZE - 2));
+                    } else {
+                        internalSideLength = 1;
+                    }
+
+                    const mitigation = tutorialInfiniteLoopMitigation(loopCount, {
+                        startX,
+                        startY,
+                        sideLength: internalSideLength,
+                        shouldBreak
+                    });
+                    startX = mitigation.startX;
+                    startY = mitigation.startY;
+                    internalSideLength = mitigation.sideLength;
+                    shouldBreak = mitigation.shouldBreak;
+
+                    if (!shouldBreak) {
+                        const xValues = getLeftAndRightXValues(startX, sideLength, internalSideLength);
+                        leftX = xValues.leftX;
+                        rightX = xValues.rightX;
+                        internalSideLength = xValues.sideLength;
+                    } else {
+                        const xValues = getLeftAndRightXValuesSimple(startX, internalSideLength);
+                        leftX = xValues.leftX;
+                        rightX = xValues.rightX;
+                    }
+
+                    const yValues = getTopAndBottomYValues(startY, internalSideLength);
+                    topY = yValues.topY;
+                    bottomY = yValues.bottomY;
+
+                    loopCount++;
+                } while (
+                    tutorialAreCoordinatesOutsideBounds(bottomY, rightX, leftX, topY) ||
+                    tutorialAreCoordinatesSameAsLastRound(leftX, topY, rightX)
+                );
+
+                const topLeftIdx = topY * TUTORIAL_GRID_SIZE + leftX;
+                const topRightIdx = topY * TUTORIAL_GRID_SIZE + rightX;
+                const bottomLeftIdx = bottomY * TUTORIAL_GRID_SIZE + leftX;
+                const bottomRightIdx = bottomY * TUTORIAL_GRID_SIZE + rightX;
+
+                if (!areOneOrMoreSquaresAnimating()) {
+                    tutorialInfiniteLoopIndex = 0;
+                    tutorialPrevLeftX = leftX;
+                    tutorialPrevTopY = topY;
+                    tutorialPrevRightX = rightX;
+
+                    tutorialPattern = [
+                        tutorialGrid[topLeftIdx],
+                        tutorialGrid[topRightIdx],
+                        tutorialGrid[bottomLeftIdx],
+                        tutorialGrid[bottomRightIdx]
+                    ];
+
+                    tutorialCurrentSolutionCoords = [topLeftIdx, topRightIdx, bottomLeftIdx, bottomRightIdx];
+                    return;
+                }
+            } while (true);
+        }
+
+        function tutorialInfiniteLoopMitigation(loopCount, state) {
+            let { startX, startY, sideLength, shouldBreak } = state;
+            if (loopCount !== 0 && loopCount % 5 === 0) {
+                shouldBreak = false;
+                switch (tutorialGetIndexForInfiniteLoopMitigationTechnique()) {
+                    case 0:
+                        startX = 0;
+                        startY = 0;
+                        break;
+                    case 1:
+                        startX = TUTORIAL_GRID_SIZE - 1;
+                        startY = 0;
+                        break;
+                    case 2:
+                        startX = 0;
+                        startY = TUTORIAL_GRID_SIZE - 1;
+                        break;
+                    case 3:
+                        startX = TUTORIAL_GRID_SIZE - 1;
+                        startY = TUTORIAL_GRID_SIZE - 1;
+                        break;
+                    case 4:
+                        startX = 0;
+                        startY = 0;
+                        sideLength = 1;
+                        break;
+                    case 5:
+                        startX = TUTORIAL_GRID_SIZE - 1;
+                        startY = 0;
+                        sideLength = 1;
+                        shouldBreak = true;
+                        break;
+                    case 6:
+                        startX = 0;
+                        startY = TUTORIAL_GRID_SIZE - 1;
+                        sideLength = 1;
+                        shouldBreak = true;
+                        break;
+                    case 7:
+                        startX = TUTORIAL_GRID_SIZE - 1;
+                        startY = TUTORIAL_GRID_SIZE - 1;
+                        sideLength = 1;
+                        shouldBreak = true;
+                        break;
+                    case 8:
+                        startX = Math.floor(TUTORIAL_GRID_SIZE / 2);
+                        startY = Math.floor(TUTORIAL_GRID_SIZE / 2);
+                        sideLength = 1;
+                        shouldBreak = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return { startX, startY, sideLength, shouldBreak };
+        }
+
+        function tutorialGetIndexForInfiniteLoopMitigationTechnique() {
+            const current = tutorialInfiniteLoopIndex;
+            tutorialInfiniteLoopIndex = tutorialInfiniteLoopIndex === 8 ? 0 : tutorialInfiniteLoopIndex + 1;
+            return current;
+        }
+
+        function tutorialAreCoordinatesOutsideBounds(bottomY, rightX, leftX, topY) {
+            return bottomY >= TUTORIAL_GRID_SIZE ||
+                rightX >= TUTORIAL_GRID_SIZE ||
+                leftX < 0 ||
+                topY < 0;
+        }
+
+        function tutorialAreCoordinatesSameAsLastRound(newLeftX, newTopY, newRightX) {
+            return newLeftX === tutorialPrevLeftX &&
+                newTopY === tutorialPrevTopY &&
+                newRightX === tutorialPrevRightX;
+        }
+
         function showGame() {
             document.getElementById('homeScreen').style.display = 'none';
             document.getElementById('moreScreen').style.display = 'none';
+            document.getElementById('tutorialScreen').style.display = 'none';
             document.getElementById('gameContainer').style.display = 'block';
             document.body.classList.add('game-active');
             stopDecorativeTimer();
+            stopTutorialAnimation();
             startGame();
         }
 
