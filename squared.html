@@ -164,7 +164,7 @@
 
         .square.selected {
             transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(184, 164, 212, 0.5);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 0 5px rgba(184, 164, 212, 0.5);
         }
 
         .square.hint {
@@ -413,7 +413,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
         }
 
         .tutorial-screen-wrapper {
@@ -550,7 +550,7 @@
 
         .tutorial-square.highlight {
             transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(184, 164, 212, 0.45), 0 0 0 3px rgba(184, 164, 212, 0.35);
+            box-shadow: 0 6px 16px rgba(184, 164, 212, 0.45), 0 0 0 5px rgba(184, 164, 212, 0.35);
         }
 
         .tutorial-square.highlight::after {
@@ -1140,7 +1140,7 @@
                             <div class="tutorial-pack-description">Move on to a brand new pattern with no penalty if the current board feels tricky.</div>
                         </div>
                         <div class="tutorial-pack">
-                            <div class="tutorial-pack-title">Clock Stops</div>
+                            <div class="tutorial-pack-title">Time +</div>
                             <div class="tutorial-pack-description">Pause the countdown timer long enough to finish the pattern without pressure.</div>
                         </div>
                     </div>
@@ -1248,9 +1248,9 @@
                     <div class="action-count"><span id="skipsCount">5</span></div>
                     <div class="action-label">skips</div>
                 </div>
-                <div class="action-item" id="clockStopsAction" onclick="useClockStop()">
-                    <div class="action-count"><span id="clockStopsCount">5</span></div>
-                    <div class="action-label">clock stops</div>
+                <div class="action-item" id="timePlussAction" onclick="usetimePlus()">
+                    <div class="action-count"><span id="timePlussCount">5</span></div>
+                    <div class="action-label">time +</div>
                 </div>
             </div>
         </div>
@@ -1286,7 +1286,7 @@
         let currentColors = COLOR_THEMES[0];
         let hintsRemaining = 5;
         let skipsRemaining = 5;
-        let clockStopsRemaining = 5;
+        let timePlussRemaining = 5;
         let prevLeftX = -1;
         let prevTopY = -1;
         let prevRightX = -1;
@@ -1583,9 +1583,9 @@
             }
 
             if (sideLength === 0) {
-                text = 'Grouped squares share edges and form a tight 2×2 corner.';
-            } else {
                 text = 'Equidistant squares stretch into a larger outline while keeping perfect spacing.';
+            } else {
+                text = 'Grouped squares share edges and form a tight 2×2 corner.';
             }
 
             message.textContent = text;
@@ -1771,7 +1771,7 @@
             selectedSquares = [];
             hintsRemaining = 5;
             skipsRemaining = 5;
-            clockStopsRemaining = 5;
+            timePlussRemaining = 5;
             prevLeftX = -1;
             prevTopY = -1;
             prevRightX = -1;
@@ -2234,12 +2234,12 @@
             document.getElementById('score').textContent = score;
             document.getElementById('hintsCount').textContent = hintsRemaining;
             document.getElementById('skipsCount').textContent = skipsRemaining;
-            document.getElementById('clockStopsCount').textContent = clockStopsRemaining;
+            document.getElementById('timePlussCount').textContent = timePlussRemaining;
             
             // Update border visibility based on remaining counts
             const hintsAction = document.getElementById('hintsAction');
             const skipsAction = document.getElementById('skipsAction');
-            const clockStopsAction = document.getElementById('clockStopsAction');
+            const timePlussAction = document.getElementById('timePlussAction');
             
             if (hintsRemaining === 0) {
                 hintsAction.classList.add('depleted');
@@ -2253,10 +2253,10 @@
                 skipsAction.classList.remove('depleted');
             }
             
-            if (clockStopsRemaining === 0) {
-                clockStopsAction.classList.add('depleted');
+            if (timePlussRemaining === 0) {
+                timePlussAction.classList.add('depleted');
             } else {
-                clockStopsAction.classList.remove('depleted');
+                timePlussAction.classList.remove('depleted');
             }
         }
 
@@ -2285,9 +2285,9 @@
             }
         }
 
-        function useClockStop() {
-            if (clockStopsRemaining > 0) {
-                clockStopsRemaining--;
+        function usetimePlus() {
+            if (timePlussRemaining > 0) {
+                timePlussRemaining--;
                 timeLeft += 10; // Add 10 seconds
                 updateDisplay();
             }
