@@ -416,23 +416,87 @@
             padding: 40px 20px;
         }
 
-        .tutorial-container {
+        .tutorial-screen-wrapper {
             position: relative;
             width: 100%;
             max-width: 650px;
+        }
+
+        .tutorial-container {
+            position: relative;
+            width: 100%;
             background: white;
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
+        .tutorial-back-button {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
+            padding: 10px;
+            z-index: 5;
+        }
+
+        .tutorial-back-button:hover {
+            color: #1E9FD8;
+        }
+
         .tutorial-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
             text-transform: uppercase;
-            letter-spacing: 6px;
-            font-size: 1.4em;
-            color: #b8a4d4;
-            margin-bottom: 20px;
-            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .tutorial-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tutorial-tab {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            padding: 10px 5px;
+            cursor: pointer;
+            color: #999;
+            position: relative;
+            transition: color 0.3s;
+            text-transform: lowercase;
+        }
+
+        .tutorial-tab.active {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .tutorial-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #333;
+        }
+
+        .tutorial-tab-panel {
+            display: none;
+        }
+
+        .tutorial-tab-panel.active {
+            display: block;
         }
 
         .tutorial-top {
@@ -463,7 +527,7 @@
 
         .tutorial-grid-wrapper {
             margin-top: 30px;
-            border-top: 1px solid #eee;
+            
         }
 
         .tutorial-grid {
@@ -510,8 +574,7 @@
 
         .tutorial-packs {
             margin-top: 35px;
-            border-top: 1px solid #eee;
-            padding-top: 25px;
+            -top: 25px;
             display: grid;
             gap: 20px;
         }
@@ -834,22 +897,6 @@
             transform: scale(1.1);
         }
 
-        .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: none;
-            border: none;
-            font-size: 1.5em;
-            cursor: pointer;
-            color: #333;
-            padding: 10px;
-        }
-
-        .back-button:hover {
-            color: #1E9FD8;
-        }
-
         /* Mobile responsive styles */
         @media (max-width: 768px) {
             .home-core {
@@ -900,6 +947,18 @@
 
             .tutorial-container {
                 padding: 24px;
+            }
+
+            .tutorial-title {
+                font-size: 1.5em;
+            }
+
+            .tutorial-tabs {
+                gap: 15px;
+            }
+
+            .tutorial-tab {
+                font-size: 1em;
             }
 
             .tutorial-top {
@@ -995,7 +1054,7 @@
                     <div class="logo-square hollow"></div>
                     <div class="logo-square"></div>
                 </div>
-                <h1>Squared</h1>
+                <p style="font-size: 56px;">Squared</p>
             </div>
 
             <div class="menu">
@@ -1008,7 +1067,7 @@
                     </div>
                     Play
                 </button>
-                <button class="menu-button" onclick="alert('Stats coming soon!')">
+                <!--<button class="menu-button" onclick="alert('Stats coming soon!')">
                     <div class="menu-icon">
                         <div class="menu-icon-square"></div>
                         <div class="menu-icon-square"></div>
@@ -1016,7 +1075,7 @@
                         <div class="menu-icon-square"></div>
                     </div>
                     Stats
-                </button>
+                </button> -->
                 <button class="menu-button" onclick="showTutorial()">
                     <div class="menu-icon">
                         <div class="menu-icon-square"></div>
@@ -1040,40 +1099,51 @@
     </div>
 
     <div id="tutorialScreen" class="tutorial-screen" style="display: none;">
-        <div class="tutorial-container">
-            <button class="back-button" onclick="showHome()">←</button>
-            <div class="tutorial-title">Tutorial</div>
+        <div class="tutorial-screen-wrapper">
+            <button class="tutorial-back-button" onclick="showHome()">←</button>
 
-            <div class="tutorial-top">
-                <div class="tutorial-description">
-                    <p>Given a pattern, look for four squares in the board that match the colors and form the corners of a perfect square.</p>
-                    <br/>
-                    <p>The tutorial alternates between tightly grouped squares and equidistant squares so you can see both possible solution styles.</p>
-                </div>
-                
-            </div>
+            <div class="tutorial-container">
+                <div class="tutorial-title">Tutorial</div>
 
-            <div class="tutorial-grid-wrapper">
-                <div class="tutorial-pattern-block">
-                    <div class="pattern-label">Pattern to match</div>
-                    <div class="pattern" id="tutorialPattern"></div>
+                <div class="tutorial-tabs">
+                    <button class="tutorial-tab active" data-tab="basics" onclick="setActiveTutorialTab('basics')">basics</button>
+                    <button class="tutorial-tab" data-tab="extras" onclick="setActiveTutorialTab('extras')">extras</button>
                 </div>
-                <div id="tutorialMessage" class="tutorial-message"></div>
-                <div id="tutorialGrid" class="tutorial-grid"></div>
-            </div>
 
-            <div class="tutorial-packs">
-                <div class="tutorial-pack">
-                    <div class="tutorial-pack-title">Hints</div>
-                    <div class="tutorial-pack-description">Reveal a helpful square within the current pattern so you can lock in on the right spot faster.</div>
+                <div id="tutorialBasics" class="tutorial-tab-panel active" data-tab-panel="basics">
+                    <div class="tutorial-top">
+                        <div class="tutorial-description">
+                            <p>Given a pattern, look for four squares in the board that match the colors and form the corners of a larger square.</p>
+                            <!--<p>The tutorial alternates between tightly grouped squares and equidistant squares so you can see both possible solution styles.</p>-->
+                        </div>
+                        
+                    </div>
+
+                    <div class="tutorial-grid-wrapper">
+                        <div class="tutorial-pattern-block">
+                            <div class="pattern-label">Pattern to match</div>
+                            <div class="pattern" id="tutorialPattern"></div>
+                        </div>
+                        <div id="tutorialMessage" class="tutorial-message"></div>
+                        <div id="tutorialGrid" class="tutorial-grid"></div>
+                    </div>
                 </div>
-                <div class="tutorial-pack">
-                    <div class="tutorial-pack-title">Skips</div>
-                    <div class="tutorial-pack-description">Move on to a brand new pattern with no penalty if the current board feels tricky or crowded.</div>
-                </div>
-                <div class="tutorial-pack">
-                    <div class="tutorial-pack-title">Clock Stops</div>
-                    <div class="tutorial-pack-description">Pause the countdown timer long enough to finish the pattern without pressure.</div>
+
+                <div id="tutorialExtras" class="tutorial-tab-panel" data-tab-panel="extras">
+                    <div class="tutorial-packs">
+                        <div class="tutorial-pack">
+                            <div class="tutorial-pack-title">Hints</div>
+                            <div class="tutorial-pack-description">Reveal a helpful square within the current pattern so you can lock in on the right spot faster.</div>
+                        </div>
+                        <div class="tutorial-pack">
+                            <div class="tutorial-pack-title">Skips</div>
+                            <div class="tutorial-pack-description">Move on to a brand new pattern with no penalty if the current board feels tricky.</div>
+                        </div>
+                        <div class="tutorial-pack">
+                            <div class="tutorial-pack-title">Clock Stops</div>
+                            <div class="tutorial-pack-description">Pause the countdown timer long enough to finish the pattern without pressure.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1268,7 +1338,7 @@
             document.getElementById('tutorialScreen').style.display = 'flex';
             document.body.classList.add('game-active');
             stopDecorativeTimer();
-            startTutorial();
+            setActiveTutorialTab('basics');
         }
 
         function showSettingsTab() {
@@ -1283,6 +1353,27 @@
             event.target.classList.add('active');
             document.getElementById('settingsTab').style.display = 'none';
             document.getElementById('aboutTab').style.display = 'block';
+        }
+
+        function setActiveTutorialTab(tabKey) {
+            const tabs = document.querySelectorAll('.tutorial-tab');
+            tabs.forEach(tab => {
+                const isActive = tab.dataset.tab === tabKey;
+                tab.classList.toggle('active', isActive);
+            });
+
+            const panels = document.querySelectorAll('.tutorial-tab-panel');
+            panels.forEach(panel => {
+                const isActive = panel.dataset.tabPanel === tabKey;
+                panel.classList.toggle('active', isActive);
+                panel.style.display = isActive ? 'block' : 'none';
+            });
+
+            if (tabKey === 'basics') {
+                startTutorial();
+            } else {
+                stopTutorialAnimation();
+            }
         }
 
         function selectTheme(index) {
