@@ -74,7 +74,7 @@ h1 {
 
 .timer {
     color: #ffb3ba;
-    font-size: 1.105em;
+    font-size: 1.3em;
     font-weight: 600;
 }
 
@@ -92,7 +92,7 @@ h1 {
 
 .score {
     color: #bae1ff;
-    font-size: 1.105em;
+    font-size: 1.3em;
     font-weight: 600;
 }
 
@@ -404,6 +404,7 @@ h1 {
     justify-content: center;
     padding: 30px 20px;
     min-height: 600px;
+    min-width: 450px;
 }
 
 .tutorial-screen-wrapper {

@@ -1158,7 +1158,9 @@
             
             if (isValid) {
                 showMessage('Perfect! ✓', 'success');
-                score += 40; // 10 points per square
+                const points = 4; // 1 points per square
+                // TODO - apply multiplier
+                score += points; 
                 
                 setTimeout(() => {
                     showMessage('', '');
