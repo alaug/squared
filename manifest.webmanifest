@@ -1,7 +1,7 @@
 {
   "name": "Squared",
   "short_name": "Squared",
-  "start_url": "./squared.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f5f5f5",
   "theme_color": "#f5f5f5",
