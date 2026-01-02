@@ -129,7 +129,7 @@
                 <div id="tutorialBasics" class="tutorial-tab-panel active" data-tab-panel="basics">
                     <div class="tutorial-top">
                         <div class="tutorial-description">
-                            <p>Given a pattern, look for four squares in the board that match the colors and form the corners of a larger square.</p>
+                            <p>Find four squares that match the pattern and form the corners of a larger square.</p>
                             <!--<p>The tutorial alternates between tightly grouped squares and equidistant squares so you can see both possible solution styles.</p>-->
                         </div>
                         
@@ -149,7 +149,7 @@
                     <div class="tutorial-packs">
                         <div class="tutorial-pack">
                             <div class="tutorial-pack-title">Hints</div>
-                            <div class="tutorial-pack-description">Reveal a helpful square within the current pattern so you can lock in on the right spot faster.</div>
+                            <div class="tutorial-pack-description">Reveal a square within the current pattern so you can lock in on the right spot faster.</div>
                         </div>
                         <div class="tutorial-pack">
                             <div class="tutorial-pack-title">Skips</div>
@@ -224,7 +224,7 @@
         <div id="aboutTab" style="display: none;">
             <p style="margin-bottom: 20px;">created by: <strong>Austin Laugesen</strong></p>
             <p style="margin-bottom: 20px;">email: <a href="mailto:alaug@outlook.com" style="color: #1E9FD8; text-decoration: none;">alaug@outlook.com</a></p>
-            <p style="margin-bottom: 20px;">version: 1.01.01.2026</p>
+            <p style="margin-bottom: 20px;">version: 1.2026.01.01</p>
             
         </div>
         </div>
@@ -599,9 +599,9 @@
             }
 
             if (sideLength === 0) {
-                text = 'Equidistant squares stretch into a larger outline while keeping perfect spacing.';
+                text = 'Equidistant squares make a larger outline.';
             } else {
-                text = 'Grouped squares share edges and form a tight 2×2 corner.';
+                text = 'Grouped squares share edges.';
             }
 
             message.textContent = text;
