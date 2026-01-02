@@ -1,8 +1,9 @@
 const CACHE_NAME = 'squared-cache-v1';
 const ASSETS_TO_CACHE = [
   './',
-  './squared.html',
+  './index.html',
   './favicon.svg',
+  './icon-512.png',
   './manifest.webmanifest'
 ];
 
