@@ -16,6 +16,7 @@ body {
 
 body.game-active {
     background: #f5f5f5;
+    align-items: center;
 }
 
 .game-container-wrapper {
@@ -704,7 +705,10 @@ h1 {
 .more-screen-wrapper {
     position: relative;
     width: 100%;
-    max-width: 500px;
+    max-width: 650px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .more-screen {
@@ -714,7 +718,8 @@ h1 {
     box-sizing: border-box;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    min-height: 600px;
+    min-height: 400px;
+    
 }
 
 .more-back-button {
