@@ -233,7 +233,7 @@
         <div id="aboutTab" style="display: none;">
             <p style="margin-bottom: 20px;">created by: <strong>Austin Laugesen</strong></p>
             <p style="margin-bottom: 20px;">email: <a href="mailto:alaug@outlook.com" style="color: #1E9FD8; text-decoration: none;">alaug@outlook.com</a></p>
-            <p style="margin-bottom: 20px;">version: 1.2026.01.01</p>
+            <p style="margin-bottom: 20px;">version: 1.2026.01.26</p>
             
         </div>
         </div>
@@ -339,7 +339,7 @@
         let tutorialPrevRightX = -1;
         let tutorialInfiniteLoopIndex = 0;
 
-        function showHome() {
+        function showHome(updateHash = true) {
             document.getElementById('homeScreen').classList.add('active');
             document.getElementById('gameContainer').classList.remove('active');
             document.getElementById('moreScreen').classList.remove('active');
@@ -347,6 +347,9 @@
             document.body.classList.remove('game-active');
             stopTutorialAnimation();
             startDecorativeTimer();
+            if (updateHash) {
+                history.pushState(null, '', window.location.pathname);
+            }
         }
 
         function backToHome() {
@@ -354,16 +357,19 @@
             showHome();
         }
 
-        function showMore() {
+        function showMore(updateHash = true) {
             document.getElementById('homeScreen').classList.remove('active');
             document.getElementById('gameContainer').classList.remove('active');
             document.getElementById('moreScreen').classList.add('active');
             document.getElementById('tutorialScreen').classList.remove('active');
             stopDecorativeTimer();
             stopTutorialAnimation();
+            if (updateHash) {
+                history.pushState(null, '', '#more');
+            }
         }
 
-        function showTutorial() {
+        function showTutorial(updateHash = true) {
             document.getElementById('homeScreen').classList.remove('active');
             document.getElementById('gameContainer').classList.remove('active');
             document.getElementById('moreScreen').classList.remove('active');
@@ -371,6 +377,9 @@
             document.body.classList.add('game-active');
             stopDecorativeTimer();
             setActiveTutorialTab('basics');
+            if (updateHash) {
+                history.pushState(null, '', '#tutorial');
+            }
         }
 
         function showSettingsTab() {
@@ -789,7 +798,7 @@
                 newRightX === tutorialPrevRightX;
         }
 
-        function showGame() {
+        function showGame(updateHash = true) {
             document.getElementById('homeScreen').classList.remove('active');
             document.getElementById('moreScreen').classList.remove('active');
             document.getElementById('tutorialScreen').classList.remove('active');
@@ -798,6 +807,9 @@
             stopDecorativeTimer();
             stopTutorialAnimation();
             startGame();
+            if (updateHash) {
+                history.pushState(null, '', '#play');
+            }
         }
 
         function startGame() {
@@ -1330,9 +1342,29 @@
             }
         }
 
+        function handleHashChange() {
+            const hash = window.location.hash;
+            switch (hash) {
+                case '#play':
+                    showGame(false);
+                    break;
+                case '#tutorial':
+                    showTutorial(false);
+                    break;
+                case '#more':
+                    showMore(false);
+                    break;
+                default:
+                    showHome(false);
+                    break;
+            }
+        }
+
+        window.addEventListener('hashchange', handleHashChange);
+
         document.addEventListener('DOMContentLoaded', () => {
             initDecorativeSquares();
-            startDecorativeTimer();
+            handleHashChange();
         });
 
         if ('serviceWorker' in navigator) {
