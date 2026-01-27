@@ -116,50 +116,50 @@
     </div>
 
     <div id="tutorialScreen" class="screen tutorial-screen">
-        <div class="tutorial-screen-wrapper">
-            <button class="tutorial-back-button" onclick="showHome()">←</button>
+        <header class="screen-header">
+            <button class="back-btn" onclick="showHome()">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+            </button>
+            <h2>Tutorial</h2>
+        </header>
+        <div class="screen-content">
+            <div class="tutorial-tabs">
+                <button class="tutorial-tab active" data-tab="basics" onclick="setActiveTutorialTab('basics')">basics</button>
+                <button class="tutorial-tab" data-tab="extras" onclick="setActiveTutorialTab('extras')">extras</button>
+            </div>
 
-            <div class="tutorial-container">
-                <div class="tutorial-title">Tutorial</div>
-
-                <div class="tutorial-tabs">
-                    <button class="tutorial-tab active" data-tab="basics" onclick="setActiveTutorialTab('basics')">basics</button>
-                    <button class="tutorial-tab" data-tab="extras" onclick="setActiveTutorialTab('extras')">extras</button>
-                </div>
-
-                <div id="tutorialBasics" class="tutorial-tab-panel active" data-tab-panel="basics">
-                    <div class="tutorial-top">
-                        <div class="tutorial-description">
-                            <p>Find four squares that match the pattern and form the corners of a larger square.</p>
-                            <!--<p>The tutorial alternates between tightly grouped squares and equidistant squares so you can see both possible solution styles.</p>-->
-                        </div>
-                        
-                    </div>
-
-                    <div class="tutorial-grid-wrapper">
-                        <div class="tutorial-pattern-block">
-                            <div class="pattern-label">Pattern to match</div>
-                            <div class="pattern" id="tutorialPattern"></div>
-                        </div>
-                        <div id="tutorialMessage" class="tutorial-message"></div>
-                        <div id="tutorialGrid" class="tutorial-grid"></div>
+            <div id="tutorialBasics" class="tutorial-tab-panel active" data-tab-panel="basics">
+                <div class="tutorial-top">
+                    <div class="tutorial-description">
+                        <p>Find four squares that match the pattern and form the corners of a larger square.</p>
                     </div>
                 </div>
 
-                <div id="tutorialExtras" class="tutorial-tab-panel" data-tab-panel="extras">
-                    <div class="tutorial-packs">
-                        <div class="tutorial-pack">
-                            <div class="tutorial-pack-title">Hints</div>
-                            <div class="tutorial-pack-description">Reveal a square within the current pattern so you can lock in on the right spot faster.</div>
-                        </div>
-                        <div class="tutorial-pack">
-                            <div class="tutorial-pack-title">Skips</div>
-                            <div class="tutorial-pack-description">Move on to a brand new pattern with no penalty if the current board feels tricky.</div>
-                        </div>
-                        <div class="tutorial-pack">
-                            <div class="tutorial-pack-title">Time +</div>
-                            <div class="tutorial-pack-description">Pause the countdown timer long enough to finish the pattern without pressure.</div>
-                        </div>
+                <div class="tutorial-grid-wrapper">
+                    <div class="tutorial-pattern-block">
+                        <div class="pattern-label">Pattern to match</div>
+                        <div class="pattern" id="tutorialPattern"></div>
+                    </div>
+                    <div id="tutorialMessage" class="tutorial-message"></div>
+                    <div id="tutorialGrid" class="tutorial-grid"></div>
+                </div>
+            </div>
+
+            <div id="tutorialExtras" class="tutorial-tab-panel" data-tab-panel="extras">
+                <div class="tutorial-packs">
+                    <div class="tutorial-pack">
+                        <div class="tutorial-pack-title">Hints</div>
+                        <div class="tutorial-pack-description">Reveal a square within the current pattern so you can lock in on the right spot faster.</div>
+                    </div>
+                    <div class="tutorial-pack">
+                        <div class="tutorial-pack-title">Skips</div>
+                        <div class="tutorial-pack-description">Move on to a brand new pattern with no penalty if the current board feels tricky.</div>
+                    </div>
+                    <div class="tutorial-pack">
+                        <div class="tutorial-pack-title">Time +</div>
+                        <div class="tutorial-pack-description">Pause the countdown timer long enough to finish the pattern without pressure.</div>
                     </div>
                 </div>
             </div>

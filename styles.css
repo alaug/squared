@@ -431,55 +431,19 @@ h1 {
 
 .tutorial-screen {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 30px 20px;
+    padding: 0;
+}
+
+.tutorial-screen .screen-header,
+.tutorial-screen .screen-content {
+    width: 100%;
     max-width: 500px;
 }
 
 .tutorial-screen.active {
     display: flex;
-}
-
-.tutorial-screen-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-}
-
-.tutorial-container {
-    position: relative;
-    width: 100%;
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.tutorial-back-button {
-    position: absolute;
-    top: -35px;
-    left: 0;
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    cursor: pointer;
-    color: #333;
-    padding: 10px;
-    z-index: 5;
-}
-
-.tutorial-back-button:hover {
-    color: #1E9FD8;
-}
-
-.tutorial-title {
-    font-size: 1.8em;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 25px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
 }
 
 .tutorial-tabs {
