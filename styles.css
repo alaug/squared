@@ -738,8 +738,14 @@ h1 {
 .more-screen-wrapper {
     display: flex;
     flex-direction: column;
-    max-width: 500px;
+    align-items: center;
     padding: 0;
+}
+
+.more-screen-wrapper .screen-header,
+.more-screen-wrapper .screen-content {
+    width: 100%;
+    max-width: 500px;
 }
 
 .more-screen-wrapper.active {
