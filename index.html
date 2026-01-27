@@ -167,10 +167,15 @@
     </div>
 
     <div id="moreScreen" class="screen more-screen-wrapper">
-        <button class="more-back-button" onclick="showHome()">←</button>
-        
-        <div class="more-screen" style="align-items: center;">
-            <h2 class="more-header">MORE</h2>
+        <header class="screen-header">
+            <button class="back-btn" onclick="showHome()">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+            </button>
+            <h2>MORE</h2>
+        </header>
+        <div class="screen-content">
         
         <div class="more-tabs">
             <button class="more-tab active" onclick="showSettingsTab()">settings</button>
@@ -178,46 +183,49 @@
         </div>
         
         <div id="settingsTab">
-            <!--<div class="settings-section">
-                <div class="setting-label">username</div>
-                <input type="text" class="username-input" id="usernameInput" value="{username}" placeholder="Enter username">
-            </div>-->
-            
-                       
             <div class="settings-section">
                 <div class="setting-label">theme</div>
-                <div class="theme-grid">
-                    <!-- Row 1 -->
-                    <div class="theme-radio selected" onclick="selectTheme(0)"></div>
-                    <div class="theme-color" style="background: #7FD45E;" onclick="selectTheme(0)"></div>
-                    <div class="theme-color" style="background: #E8479D;" onclick="selectTheme(0)"></div>
-                    <div class="theme-color" style="background: #FFA826;" onclick="selectTheme(0)"></div>
-                    <div class="theme-color" style="background: #1E9FD8;" onclick="selectTheme(0)"></div>
-                    <div class="theme-color" style="background: #7E8FD4;" onclick="selectTheme(0)"></div>
-                    
-                    <!-- Row 2 -->
-                    <div class="theme-radio" onclick="selectTheme(1)"></div>
-                    <div class="theme-color" style="background: #F5A623;" onclick="selectTheme(1)"></div>
-                    <div class="theme-color" style="background: #7ED4D1;" onclick="selectTheme(1)"></div>
-                    <div class="theme-color" style="background: #EC8C99;" onclick="selectTheme(1)"></div>
-                    <div class="theme-color" style="background: #8FD47E;" onclick="selectTheme(1)"></div>
-                    <div class="theme-color" style="background: #C96565;" onclick="selectTheme(1)"></div>
-                    
-                    <!-- Row 3 -->
-                    <div class="theme-radio" onclick="selectTheme(2)"></div>
-                    <div class="theme-color" style="background: #6B9370;" onclick="selectTheme(2)"></div>
-                    <div class="theme-color" style="background: #B5D4A1;" onclick="selectTheme(2)"></div>
-                    <div class="theme-color" style="background: #A8CEE2;" onclick="selectTheme(2)"></div>
-                    <div class="theme-color" style="background: #D4C89E;" onclick="selectTheme(2)"></div>
-                    <div class="theme-color" style="background: #E8B4B8;" onclick="selectTheme(2)"></div>
-                    
-                    <!-- Row 4 -->
-                    <div class="theme-radio" onclick="selectTheme(3)"></div>
-                    <div class="theme-color" style="background: #2D3436;" onclick="selectTheme(3)"></div>
-                    <div class="theme-color" style="background: #4A5F8C;" onclick="selectTheme(3)"></div>
-                    <div class="theme-color" style="background: #B8C5E0;" onclick="selectTheme(3)"></div>
-                    <div class="theme-color" style="background: #F4E63D;" onclick="selectTheme(3)"></div>
-                    <div class="theme-color" style="background: #9BA653;" onclick="selectTheme(3)"></div>
+                <div class="theme-options">
+                    <div class="theme-option selected" data-theme="0" onclick="selectTheme(0)">
+                        <div class="theme-preview">
+                            <div class="theme-color" style="background: #7FD45E;"></div>
+                            <div class="theme-color" style="background: #E8479D;"></div>
+                            <div class="theme-color" style="background: #FFA826;"></div>
+                            <div class="theme-color" style="background: #1E9FD8;"></div>
+                            <div class="theme-color" style="background: #7E8FD4;"></div>
+                        </div>
+                        <div class="theme-radio selected"></div>
+                    </div>
+                    <div class="theme-option" data-theme="1" onclick="selectTheme(1)">
+                        <div class="theme-preview">
+                            <div class="theme-color" style="background: #F5A623;"></div>
+                            <div class="theme-color" style="background: #7ED4D1;"></div>
+                            <div class="theme-color" style="background: #EC8C99;"></div>
+                            <div class="theme-color" style="background: #8FD47E;"></div>
+                            <div class="theme-color" style="background: #C96565;"></div>
+                        </div>
+                        <div class="theme-radio"></div>
+                    </div>
+                    <div class="theme-option" data-theme="2" onclick="selectTheme(2)">
+                        <div class="theme-preview">
+                            <div class="theme-color" style="background: #6B9370;"></div>
+                            <div class="theme-color" style="background: #B5D4A1;"></div>
+                            <div class="theme-color" style="background: #A8CEE2;"></div>
+                            <div class="theme-color" style="background: #D4C89E;"></div>
+                            <div class="theme-color" style="background: #E8B4B8;"></div>
+                        </div>
+                        <div class="theme-radio"></div>
+                    </div>
+                    <div class="theme-option" data-theme="3" onclick="selectTheme(3)">
+                        <div class="theme-preview">
+                            <div class="theme-color" style="background: #2D3436;"></div>
+                            <div class="theme-color" style="background: #4A5F8C;"></div>
+                            <div class="theme-color" style="background: #B8C5E0;"></div>
+                            <div class="theme-color" style="background: #F4E63D;"></div>
+                            <div class="theme-color" style="background: #9BA653;"></div>
+                        </div>
+                        <div class="theme-radio"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -397,11 +405,14 @@
         function selectTheme(index) {
             selectedThemeIndex = index;
             currentColors = COLOR_THEMES[index];
-            document.querySelectorAll('.theme-radio').forEach((radio, i) => {
+            // Update theme-option selected state
+            document.querySelectorAll('.theme-option').forEach((option, i) => {
                 if (i === index) {
-                    radio.classList.add('selected');
+                    option.classList.add('selected');
+                    option.querySelector('.theme-radio').classList.add('selected');
                 } else {
-                    radio.classList.remove('selected');
+                    option.classList.remove('selected');
+                    option.querySelector('.theme-radio').classList.remove('selected');
                 }
             });
         }
