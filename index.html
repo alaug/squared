@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="homeScreen" class="home-screen">
+    <div id="screens">
+    <div id="homeScreen" class="screen home-screen active">
         <div class="home-core">
             <div class="decorative-squares">
                 <div class="decorative-pattern top-right">
@@ -114,7 +115,7 @@
         </div>
     </div>
 
-    <div id="tutorialScreen" class="tutorial-screen" style="display: none;">
+    <div id="tutorialScreen" class="screen tutorial-screen">
         <div class="tutorial-screen-wrapper">
             <button class="tutorial-back-button" onclick="showHome()">←</button>
 
@@ -165,7 +166,7 @@
         </div>
     </div>
 
-    <div id="moreScreen" class="more-screen-wrapper" style="display: none;">
+    <div id="moreScreen" class="screen more-screen-wrapper">
         <button class="more-back-button" onclick="showHome()">←</button>
         
         <div class="more-screen" style="align-items: center;">
@@ -230,7 +231,7 @@
         </div>
     </div>
 
-    <div id="gameContainer" class="game-container-wrapper" style="display: none;">
+    <div id="gameContainer" class="screen game-container-wrapper">
         <button class="game-back-button" onclick="backToHome()">←</button>
         
         <div class="game-container">
@@ -278,6 +279,7 @@
         </div>
         </div>
     </div>
+    </div>
 
     <script>
         // Color themes matching the More page
@@ -324,10 +326,10 @@
         let tutorialInfiniteLoopIndex = 0;
 
         function showHome() {
-            document.getElementById('homeScreen').style.display = 'flex';
-            document.getElementById('gameContainer').style.display = 'none';
-            document.getElementById('moreScreen').style.display = 'none';
-            document.getElementById('tutorialScreen').style.display = 'none';
+            document.getElementById('homeScreen').classList.add('active');
+            document.getElementById('gameContainer').classList.remove('active');
+            document.getElementById('moreScreen').classList.remove('active');
+            document.getElementById('tutorialScreen').classList.remove('active');
             document.body.classList.remove('game-active');
             stopTutorialAnimation();
             startDecorativeTimer();
@@ -339,19 +341,19 @@
         }
 
         function showMore() {
-            document.getElementById('homeScreen').style.display = 'none';
-            document.getElementById('gameContainer').style.display = 'none';
-            document.getElementById('moreScreen').style.display = 'block';
-            document.getElementById('tutorialScreen').style.display = 'none';
+            document.getElementById('homeScreen').classList.remove('active');
+            document.getElementById('gameContainer').classList.remove('active');
+            document.getElementById('moreScreen').classList.add('active');
+            document.getElementById('tutorialScreen').classList.remove('active');
             stopDecorativeTimer();
             stopTutorialAnimation();
         }
 
         function showTutorial() {
-            document.getElementById('homeScreen').style.display = 'none';
-            document.getElementById('gameContainer').style.display = 'none';
-            document.getElementById('moreScreen').style.display = 'none';
-            document.getElementById('tutorialScreen').style.display = 'flex';
+            document.getElementById('homeScreen').classList.remove('active');
+            document.getElementById('gameContainer').classList.remove('active');
+            document.getElementById('moreScreen').classList.remove('active');
+            document.getElementById('tutorialScreen').classList.add('active');
             document.body.classList.add('game-active');
             stopDecorativeTimer();
             setActiveTutorialTab('basics');
@@ -771,10 +773,10 @@
         }
 
         function showGame() {
-            document.getElementById('homeScreen').style.display = 'none';
-            document.getElementById('moreScreen').style.display = 'none';
-            document.getElementById('tutorialScreen').style.display = 'none';
-            document.getElementById('gameContainer').style.display = 'block';
+            document.getElementById('homeScreen').classList.remove('active');
+            document.getElementById('moreScreen').classList.remove('active');
+            document.getElementById('tutorialScreen').classList.remove('active');
+            document.getElementById('gameContainer').classList.add('active');
             document.body.classList.add('game-active');
             stopDecorativeTimer();
             stopTutorialAnimation();
