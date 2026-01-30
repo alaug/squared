@@ -84,7 +84,7 @@
                     </div>
                     Play
                 </button>
-                <!--<button class="menu-button" onclick="alert('Stats coming soon!')">
+                <button class="menu-button" onclick="showStats()">
                     <div class="menu-icon">
                         <div class="menu-icon-square"></div>
                         <div class="menu-icon-square"></div>
@@ -92,7 +92,7 @@
                         <div class="menu-icon-square"></div>
                     </div>
                     Stats
-                </button> -->
+                </button>
                 <button class="menu-button" onclick="showTutorial()">
                     <div class="menu-icon">
                         <div class="menu-icon-square"></div>
@@ -173,7 +173,7 @@
                     <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
                 </svg>
             </button>
-            <h2>MORE</h2>
+            <h2>More</h2>
         </header>
         <div class="screen-content">
         
@@ -236,6 +236,33 @@
             <p style="margin-bottom: 20px;">version: 1.2026.01.26</p>
             
         </div>
+        </div>
+    </div>
+
+    <div id="statsScreen" class="screen stats-screen-wrapper">
+        <header class="screen-header">
+            <button class="back-btn" onclick="showHome()">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+            </button>
+            <h2>Stats</h2>
+        </header>
+        <div class="screen-content">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-value" id="statGamesPlayed">0</div>
+                    <div class="stat-label">Games Played</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statHighScore">0</div>
+                    <div class="stat-label">High Score</div>
+                </div>
+                <div class="stat-card wide">
+                    <div class="stat-value" id="statLongestGame">0s</div>
+                    <div class="stat-label">Longest Game</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -338,12 +365,14 @@
         let tutorialPrevTopY = -1;
         let tutorialPrevRightX = -1;
         let tutorialInfiniteLoopIndex = 0;
+        let gameStartTime = null;
 
         function showHome(updateHash = true) {
             document.getElementById('homeScreen').classList.add('active');
             document.getElementById('gameContainer').classList.remove('active');
             document.getElementById('moreScreen').classList.remove('active');
             document.getElementById('tutorialScreen').classList.remove('active');
+            document.getElementById('statsScreen').classList.remove('active');
             document.body.classList.remove('game-active');
             stopTutorialAnimation();
             startDecorativeTimer();
@@ -362,6 +391,7 @@
             document.getElementById('gameContainer').classList.remove('active');
             document.getElementById('moreScreen').classList.add('active');
             document.getElementById('tutorialScreen').classList.remove('active');
+            document.getElementById('statsScreen').classList.remove('active');
             stopDecorativeTimer();
             stopTutorialAnimation();
             if (updateHash) {
@@ -369,11 +399,66 @@
             }
         }
 
+        function showStats(updateHash = true) {
+            document.getElementById('homeScreen').classList.remove('active');
+            document.getElementById('gameContainer').classList.remove('active');
+            document.getElementById('moreScreen').classList.remove('active');
+            document.getElementById('tutorialScreen').classList.remove('active');
+            document.getElementById('statsScreen').classList.add('active');
+            stopDecorativeTimer();
+            stopTutorialAnimation();
+            loadStats();
+            if (updateHash) {
+                history.pushState(null, '', '#stats');
+            }
+        }
+
+        function loadStats() {
+            const stats = getStats();
+            document.getElementById('statGamesPlayed').textContent = stats.gamesPlayed;
+            document.getElementById('statHighScore').textContent = stats.highScore;
+            document.getElementById('statLongestGame').textContent = stats.longestGame + 's';
+        }
+
+        function getStats() {
+            const defaultStats = { gamesPlayed: 0, highScore: 0, longestGame: 0 };
+            try {
+                const saved = localStorage.getItem('squaredStats');
+                if (saved) {
+                    return { ...defaultStats, ...JSON.parse(saved) };
+                }
+            } catch (e) {
+                console.error('Error loading stats:', e);
+            }
+            return defaultStats;
+        }
+
+        function saveStats(stats) {
+            try {
+                localStorage.setItem('squaredStats', JSON.stringify(stats));
+            } catch (e) {
+                console.error('Error saving stats:', e);
+            }
+        }
+
+        function updateStats(finalScore, gameDuration) {
+            const stats = getStats();
+            stats.gamesPlayed++;
+            if (finalScore > stats.highScore) {
+                stats.highScore = finalScore;
+            }
+            if (gameDuration > stats.longestGame) {
+                stats.longestGame = gameDuration;
+            }
+            saveStats(stats);
+        }
+
         function showTutorial(updateHash = true) {
             document.getElementById('homeScreen').classList.remove('active');
             document.getElementById('gameContainer').classList.remove('active');
             document.getElementById('moreScreen').classList.remove('active');
             document.getElementById('tutorialScreen').classList.add('active');
+            document.getElementById('statsScreen').classList.remove('active');
             document.body.classList.add('game-active');
             stopDecorativeTimer();
             setActiveTutorialTab('basics');
@@ -802,6 +887,7 @@
             document.getElementById('homeScreen').classList.remove('active');
             document.getElementById('moreScreen').classList.remove('active');
             document.getElementById('tutorialScreen').classList.remove('active');
+            document.getElementById('statsScreen').classList.remove('active');
             document.getElementById('gameContainer').classList.add('active');
             document.body.classList.add('game-active');
             stopDecorativeTimer();
@@ -825,6 +911,7 @@
             infiniteLoopMitigationIndex = 0;
             currentSolutionCoords = [];
             validSolutions = [];
+            gameStartTime = Date.now();
             
             document.getElementById('gameScreen').style.display = 'block';
             document.getElementById('gameOverScreen').style.display = 'none';
@@ -1262,6 +1349,9 @@
             document.getElementById('gameOverScreen').style.display = 'block';
             document.getElementById('finalScore').textContent = score;
             
+            // Calculate game duration and update stats
+            const gameDuration = gameStartTime ? Math.floor((Date.now() - gameStartTime) / 1000) : 0;
+            updateStats(score, gameDuration);
         }
 
         function showMessage(text, type) {
@@ -1353,6 +1443,9 @@
                     break;
                 case '#more':
                     showMore(false);
+                    break;
+                case '#stats':
+                    showStats(false);
                     break;
                 default:
                     showHome(false);

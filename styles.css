@@ -700,6 +700,56 @@ h1 {
     display: flex;
 }
 
+/* Stats Page Styles */
+.stats-screen-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+}
+
+.stats-screen-wrapper .screen-header,
+.stats-screen-wrapper .screen-content {
+    width: 100%;
+    max-width: 500px;
+}
+
+.stats-screen-wrapper.active {
+    display: flex;
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.stat-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.stat-card.wide {
+    grid-column: span 2;
+}
+
+.stat-card .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1E9FD8;
+    margin-bottom: 8px;
+}
+
+.stat-card .stat-label {
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 /* Screen Header - shared style */
 .screen-header {
     display: flex;
