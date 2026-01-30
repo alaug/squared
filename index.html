@@ -14,56 +14,14 @@
     <div id="homeScreen" class="screen home-screen active">
         <div class="home-core">
             <div class="decorative-squares">
-                <div class="decorative-pattern top-right">
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                </div>
-
-                <div class="decorative-pattern top-right-small">
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                </div>
-
-                <div class="decorative-pattern middle-left">
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                </div>
-
-                <div class="decorative-pattern middle-right">
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                </div>
-
-                <div class="decorative-pattern bottom-left">
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                </div>
-
-                <div class="decorative-pattern bottom-left-small">
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                </div>
-
-                <div class="decorative-pattern bottom-right">
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                    <div class="decorative-square"></div>
-                </div>
+                <div class="decorative-pattern top-right"></div>
+                <div class="decorative-pattern top-right-small"></div>
+                <div class="decorative-pattern middle-left"></div>
+                <div class="decorative-pattern middle-right"></div>
+                <div class="decorative-pattern bottom-left"></div>
+                <div class="decorative-pattern bottom-left-small"></div>
+                <div class="decorative-pattern bottom-right"></div>
             </div>
-
             <div class="logo-container">
                 <div class="logo-icon">
                     <div class="logo-square"></div>
@@ -73,70 +31,25 @@
                 </div>
                 <p style="font-size: 42px;">Squared</p>
             </div>
-
-            <div class="menu">
-                <button class="menu-button" onclick="showGame()">
-                    <div class="menu-icon">
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                    </div>
-                    Play
-                </button>
-                <button class="menu-button" onclick="showStats()">
-                    <div class="menu-icon">
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                    </div>
-                    Stats
-                </button>
-                <button class="menu-button" onclick="showTutorial()">
-                    <div class="menu-icon">
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                    </div>
-                    Tutorial
-                </button>
-                <button class="menu-button" onclick="showMore()">
-                    <div class="menu-icon">
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                        <div class="menu-icon-square"></div>
-                    </div>
-                    More
-                </button>
-            </div>
+            <div class="menu" id="mainMenu"></div>
         </div>
     </div>
 
-    <div id="tutorialScreen" class="screen tutorial-screen">
+    <div id="tutorialScreen" class="screen screen-wrapper">
         <header class="screen-header">
-            <button class="back-btn" onclick="showHome()">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                </svg>
+            <button class="back-btn" onclick="showScreen('home')">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
             </button>
             <h2>Tutorial</h2>
         </header>
         <div class="screen-content">
-            <div class="tutorial-tabs">
-                <button class="tutorial-tab active" data-tab="basics" onclick="setActiveTutorialTab('basics')">basics</button>
-                <button class="tutorial-tab" data-tab="extras" onclick="setActiveTutorialTab('extras')">extras</button>
-            </div>
-
-            <div id="tutorialBasics" class="tutorial-tab-panel active" data-tab-panel="basics">
+            <div class="tabs" id="tutorialTabs"></div>
+            <div id="tutorialBasics" class="tab-panel active" data-tab-panel="basics">
                 <div class="tutorial-top">
                     <div class="tutorial-description">
                         <p>Find four squares that match the pattern and form the corners of a larger square.</p>
                     </div>
                 </div>
-
                 <div class="tutorial-grid-wrapper">
                     <div class="tutorial-pattern-block">
                         <div class="pattern-label">Pattern to match</div>
@@ -146,1327 +59,417 @@
                     <div id="tutorialGrid" class="tutorial-grid"></div>
                 </div>
             </div>
-
-            <div id="tutorialExtras" class="tutorial-tab-panel" data-tab-panel="extras">
-                <div class="tutorial-packs">
-                    <div class="tutorial-pack">
-                        <div class="tutorial-pack-title">Hints</div>
-                        <div class="tutorial-pack-description">Reveal a square within the current pattern so you can lock in on the right spot faster.</div>
-                    </div>
-                    <div class="tutorial-pack">
-                        <div class="tutorial-pack-title">Skips</div>
-                        <div class="tutorial-pack-description">Move on to a brand new pattern with no penalty if the current board feels tricky.</div>
-                    </div>
-                    <div class="tutorial-pack">
-                        <div class="tutorial-pack-title">Time +</div>
-                        <div class="tutorial-pack-description">Pause the countdown timer long enough to finish the pattern without pressure.</div>
-                    </div>
-                </div>
+            <div id="tutorialExtras" class="tab-panel" data-tab-panel="extras">
+                <div class="tutorial-packs" id="tutorialPacks"></div>
             </div>
         </div>
     </div>
 
-    <div id="moreScreen" class="screen more-screen-wrapper">
+    <div id="moreScreen" class="screen screen-wrapper">
         <header class="screen-header">
-            <button class="back-btn" onclick="showHome()">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                </svg>
+            <button class="back-btn" onclick="showScreen('home')">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
             </button>
             <h2>More</h2>
         </header>
         <div class="screen-content">
-        
-        <div class="more-tabs">
-            <button class="more-tab active" onclick="showSettingsTab()">settings</button>
-            <button class="more-tab" onclick="showAboutTab()">about</button>
-        </div>
-        
-        <div id="settingsTab">
-            <div class="settings-section">
-                <div class="setting-label">theme</div>
-                <div class="theme-options">
-                    <div class="theme-option selected" data-theme="0" onclick="selectTheme(0)">
-                        <div class="theme-preview">
-                            <div class="theme-color" style="background: #7FD45E;"></div>
-                            <div class="theme-color" style="background: #E8479D;"></div>
-                            <div class="theme-color" style="background: #FFA826;"></div>
-                            <div class="theme-color" style="background: #1E9FD8;"></div>
-                            <div class="theme-color" style="background: #7E8FD4;"></div>
-                        </div>
-                        <div class="theme-radio selected"></div>
-                    </div>
-                    <div class="theme-option" data-theme="1" onclick="selectTheme(1)">
-                        <div class="theme-preview">
-                            <div class="theme-color" style="background: #F5A623;"></div>
-                            <div class="theme-color" style="background: #7ED4D1;"></div>
-                            <div class="theme-color" style="background: #EC8C99;"></div>
-                            <div class="theme-color" style="background: #8FD47E;"></div>
-                            <div class="theme-color" style="background: #C96565;"></div>
-                        </div>
-                        <div class="theme-radio"></div>
-                    </div>
-                    <div class="theme-option" data-theme="2" onclick="selectTheme(2)">
-                        <div class="theme-preview">
-                            <div class="theme-color" style="background: #6B9370;"></div>
-                            <div class="theme-color" style="background: #B5D4A1;"></div>
-                            <div class="theme-color" style="background: #A8CEE2;"></div>
-                            <div class="theme-color" style="background: #D4C89E;"></div>
-                            <div class="theme-color" style="background: #E8B4B8;"></div>
-                        </div>
-                        <div class="theme-radio"></div>
-                    </div>
-                    <div class="theme-option" data-theme="3" onclick="selectTheme(3)">
-                        <div class="theme-preview">
-                            <div class="theme-color" style="background: #2D3436;"></div>
-                            <div class="theme-color" style="background: #4A5F8C;"></div>
-                            <div class="theme-color" style="background: #B8C5E0;"></div>
-                            <div class="theme-color" style="background: #F4E63D;"></div>
-                            <div class="theme-color" style="background: #9BA653;"></div>
-                        </div>
-                        <div class="theme-radio"></div>
-                    </div>
+            <div class="tabs" id="moreTabs"></div>
+            <div id="settingsTab" class="tab-panel active" data-tab-panel="settings">
+                <div class="settings-section">
+                    <div class="setting-label">theme</div>
+                    <div class="theme-options" id="themeOptions"></div>
                 </div>
             </div>
-        </div>
-        
-        <div id="aboutTab" style="display: none;">
-            <p style="margin-bottom: 20px;">created by: <strong>Austin Laugesen</strong></p>
-            <p style="margin-bottom: 20px;">email: <a href="mailto:alaug@outlook.com" style="color: #1E9FD8; text-decoration: none;">alaug@outlook.com</a></p>
-            <p style="margin-bottom: 20px;">version: 1.2026.01.26</p>
-            
-        </div>
+            <div id="aboutTab" class="tab-panel" data-tab-panel="about">
+                <p style="margin-bottom: 20px;">created by: <strong>Austin Laugesen</strong></p>
+                <p style="margin-bottom: 20px;">email: <a href="mailto:alaug@outlook.com" style="color: #1E9FD8; text-decoration: none;">alaug@outlook.com</a></p>
+                <p style="margin-bottom: 20px;">version: 1.2026.01.26</p>
+            </div>
         </div>
     </div>
 
-    <div id="statsScreen" class="screen stats-screen-wrapper">
+    <div id="statsScreen" class="screen screen-wrapper">
         <header class="screen-header">
-            <button class="back-btn" onclick="showHome()">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                </svg>
+            <button class="back-btn" onclick="showScreen('home')">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
             </button>
             <h2>Stats</h2>
         </header>
         <div class="screen-content">
             <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-value" id="statGamesPlayed">0</div>
-                    <div class="stat-label">Games Played</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statHighScore">0</div>
-                    <div class="stat-label">High Score</div>
-                </div>
-                <div class="stat-card wide">
-                    <div class="stat-value" id="statLongestGame">0s</div>
-                    <div class="stat-label">Longest Game</div>
-                </div>
+                <div class="stat-card"><div class="stat-value" id="statGamesPlayed">0</div><div class="stat-label">Games Played</div></div>
+                <div class="stat-card"><div class="stat-value" id="statHighScore">0</div><div class="stat-label">High Score</div></div>
+                <div class="stat-card wide"><div class="stat-value" id="statLongestGame">0s</div><div class="stat-label">Longest Game</div></div>
             </div>
         </div>
     </div>
 
     <div id="gameContainer" class="screen game-screen">
         <header class="screen-header">
-            <button class="back-btn" onclick="backToHome()">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                </svg>
+            <button class="back-btn" onclick="clearInterval(timer);showScreen('home')">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
             </button>
             <h2>Play</h2>
         </header>
         <div class="screen-content">
             <div id="gameScreen">
-            <div class="top-section">
-                <div class="timer-section">
-                    <div class="timer">time <span id="timer">60</span>s</div>
+                <div class="top-section">
+                    <div class="timer-section"><div class="timer">time <span id="timer">60</span>s</div></div>
+                    <div class="pattern-section"><div class="pattern-container"><div class="pattern" id="pattern"></div></div></div>
+                    <div class="score-section"><div class="score">score <span id="score">0</span></div></div>
                 </div>
-                
-                <div class="pattern-section">
-                    <div class="pattern-container">
-                        <div class="pattern" id="pattern"></div>
-                    </div>
-                </div>
-                
-                <div class="score-section">
-                    <div class="score">score <span id="score">0</span></div>
+                <div class="message" id="message"></div>
+                <div class="grid" id="grid"></div>
+                <div class="game-actions">
+                    <div class="action-item" id="hintsAction" onclick="usePowerUp('hints')"><div class="action-count"><span id="hintsCount">5</span></div><div class="action-label">hints</div></div>
+                    <div class="action-item" id="skipsAction" onclick="usePowerUp('skips')"><div class="action-count"><span id="skipsCount">5</span></div><div class="action-label">skips</div></div>
+                    <div class="action-item" id="timePlusAction" onclick="usePowerUp('timePlus')"><div class="action-count"><span id="timePlusCount">5</span></div><div class="action-label">time +</div></div>
                 </div>
             </div>
-
-            <div class="message" id="message"></div>
-
-            <div class="grid" id="grid"></div>
-
-            <div class="game-actions">
-                <div class="action-item" id="hintsAction" onclick="useHint()">
-                    <div class="action-count"><span id="hintsCount">5</span></div>
-                    <div class="action-label">hints</div>
-                </div>
-                <div class="action-item" id="skipsAction" onclick="useSkip()">
-                    <div class="action-count"><span id="skipsCount">5</span></div>
-                    <div class="action-label">skips</div>
-                </div>
-                <div class="action-item" id="timePlussAction" onclick="usetimePlus()">
-                    <div class="action-count"><span id="timePlussCount">5</span></div>
-                    <div class="action-label">time +</div>
-                </div>
+            <div id="gameOverScreen" style="display: none;" class="game-over">
+                <h2>Game Over!</h2>
+                <div class="final-score">Final Score: <span id="finalScore">0</span></div>
+                <button class="button" onclick="startGame()">Play Again</button>
             </div>
-        </div>
-
-        <div id="gameOverScreen" style="display: none;" class="game-over">
-            <h2>Game Over!</h2>
-            <div class="final-score">Final Score: <span id="finalScore">0</span></div>
-            <button class="button" onclick="startGame()">Play Again</button>
-        </div>
         </div>
     </div>
     </div>
 
     <script>
-        // Color themes matching the More page
         const COLOR_THEMES = [
-            ['#7FD45E', '#E8479D', '#FFA826', '#1E9FD8', '#7E8FD4'], // Theme 0 - Default
-            ['#F5A623', '#7ED4D1', '#EC8C99', '#8FD47E', '#C96565'], // Theme 1
-            ['#6B9370', '#B5D4A1', '#A8CEE2', '#D4C89E', '#E8B4B8'], // Theme 2
-            ['#2D3436', '#4A5F8C', '#B8C5E0', '#F4E63D', '#9BA653']  // Theme 3
+            ['#7FD45E', '#E8479D', '#FFA826', '#1E9FD8', '#7E8FD4'],
+            ['#F5A623', '#7ED4D1', '#EC8C99', '#8FD47E', '#C96565'],
+            ['#6B9370', '#B5D4A1', '#A8CEE2', '#D4C89E', '#E8B4B8'],
+            ['#2D3436', '#4A5F8C', '#B8C5E0', '#F4E63D', '#9BA653']
         ];
-        
-        const GRID_SIZE = 5;
-        const TUTORIAL_GRID_SIZE = 5;
-        let grid = [];
-        let pattern = [];
-        let selectedSquares = [];
-        let score = 0;
-        let timeLeft = 60;
-        let timer = null;
-        let validSolutions = [];
-        let hintSquare = null;
-        let selectedThemeIndex = 0;
-        let currentColors = COLOR_THEMES[0];
-        let hintsRemaining = 5;
-        let skipsRemaining = 5;
-        let timePlussRemaining = 5;
-        let prevLeftX = -1;
-        let prevTopY = -1;
-        let prevRightX = -1;
-        let infiniteLoopMitigationIndex = 0;
-        let currentSolutionCoords = [];
-        let decorativeSquares = [];
-        let hiddenDecorativeSquares = [];
-        let decorativeTimer = null;
-        let decorativeTimerCount = 0;
-        let tutorialGrid = [];
-        let tutorialPattern = [];
-        let tutorialSquares = [];
-        let tutorialCurrentSolutionCoords = [];
-        let tutorialTimer = null;
-        let tutorialAnimationCount = 0;
-        let tutorialPrevLeftX = -1;
-        let tutorialPrevTopY = -1;
-        let tutorialPrevRightX = -1;
-        let tutorialInfiniteLoopIndex = 0;
+        const GRID_SIZE = 5, SCREENS = ['home', 'tutorial', 'more', 'stats', 'game'];
+        let grid = [], pattern = [], selectedSquares = [], score = 0, timeLeft = 60, timer = null;
+        let validSolutions = [], hintSquare = null, selectedThemeIndex = 0, currentColors = COLOR_THEMES[0];
+        let powerUps = { hints: 5, skips: 5, timePlus: 5 };
+        let prevCoords = { leftX: -1, topY: -1, rightX: -1 }, loopIndex = 0, currentSolutionCoords = [];
+        let decorativeSquares = [], hiddenDecorativeSquares = [], decorativeTimer = null, decorativeTimerCount = 0;
+        let tutorialGrid = [], tutorialPattern = [], tutorialSquares = [], tutorialCurrentSolutionCoords = [];
+        let tutorialTimer = null, tutorialAnimationCount = 0;
+        let tutorialPrevCoords = { leftX: -1, topY: -1, rightX: -1 }, tutorialLoopIndex = 0;
         let gameStartTime = null;
 
-        function showHome(updateHash = true) {
-            document.getElementById('homeScreen').classList.add('active');
-            document.getElementById('gameContainer').classList.remove('active');
-            document.getElementById('moreScreen').classList.remove('active');
-            document.getElementById('tutorialScreen').classList.remove('active');
-            document.getElementById('statsScreen').classList.remove('active');
-            document.body.classList.remove('game-active');
-            stopTutorialAnimation();
-            startDecorativeTimer();
-            if (updateHash) {
-                history.pushState(null, '', window.location.pathname);
-            }
+        // Unified screen navigation
+        function showScreen(name, updateHash = true) {
+            const screenMap = { home: 'homeScreen', tutorial: 'tutorialScreen', more: 'moreScreen', stats: 'statsScreen', game: 'gameContainer' };
+            SCREENS.forEach(s => document.getElementById(screenMap[s]).classList.remove('active'));
+            document.getElementById(screenMap[name]).classList.add('active');
+            document.body.classList.toggle('game-active', name === 'game' || name === 'tutorial');
+            
+            if (name === 'home') { stopTutorialAnimation(); startDecorativeTimer(); }
+            else { stopDecorativeTimer(); stopTutorialAnimation(); }
+            
+            if (name === 'tutorial') setActiveTab('tutorialTabs', 'basics');
+            if (name === 'stats') loadStats();
+            if (name === 'game') startGame();
+            
+            if (updateHash) history.pushState(null, '', name === 'home' ? window.location.pathname : '#' + (name === 'game' ? 'play' : name));
         }
 
-        function backToHome() {
-            clearInterval(timer);
-            showHome();
+        // Unified tab handling
+        function setActiveTab(containerId, tabKey) {
+            const container = document.getElementById(containerId);
+            container.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabKey));
+            const parent = container.parentElement;
+            parent.querySelectorAll('.tab-panel').forEach(p => {
+                const isActive = p.dataset.tabPanel === tabKey;
+                p.classList.toggle('active', isActive);
+                p.style.display = isActive ? 'block' : 'none';
+            });
+            if (containerId === 'tutorialTabs') tabKey === 'basics' ? startTutorial() : stopTutorialAnimation();
         }
 
-        function showMore(updateHash = true) {
-            document.getElementById('homeScreen').classList.remove('active');
-            document.getElementById('gameContainer').classList.remove('active');
-            document.getElementById('moreScreen').classList.add('active');
-            document.getElementById('tutorialScreen').classList.remove('active');
-            document.getElementById('statsScreen').classList.remove('active');
-            stopDecorativeTimer();
-            stopTutorialAnimation();
-            if (updateHash) {
-                history.pushState(null, '', '#more');
-            }
-        }
-
-        function showStats(updateHash = true) {
-            document.getElementById('homeScreen').classList.remove('active');
-            document.getElementById('gameContainer').classList.remove('active');
-            document.getElementById('moreScreen').classList.remove('active');
-            document.getElementById('tutorialScreen').classList.remove('active');
-            document.getElementById('statsScreen').classList.add('active');
-            stopDecorativeTimer();
-            stopTutorialAnimation();
-            loadStats();
-            if (updateHash) {
-                history.pushState(null, '', '#stats');
-            }
-        }
-
-        function loadStats() {
-            const stats = getStats();
-            document.getElementById('statGamesPlayed').textContent = stats.gamesPlayed;
-            document.getElementById('statHighScore').textContent = stats.highScore;
-            document.getElementById('statLongestGame').textContent = stats.longestGame + 's';
-        }
-
+        // Stats management
         function getStats() {
-            const defaultStats = { gamesPlayed: 0, highScore: 0, longestGame: 0 };
-            try {
-                const saved = localStorage.getItem('squaredStats');
-                if (saved) {
-                    return { ...defaultStats, ...JSON.parse(saved) };
-                }
-            } catch (e) {
-                console.error('Error loading stats:', e);
-            }
-            return defaultStats;
+            try { return { gamesPlayed: 0, highScore: 0, longestGame: 0, ...JSON.parse(localStorage.getItem('squaredStats') || '{}') }; }
+            catch { return { gamesPlayed: 0, highScore: 0, longestGame: 0 }; }
+        }
+        function saveStats(s) { try { localStorage.setItem('squaredStats', JSON.stringify(s)); } catch {} }
+        function loadStats() {
+            const s = getStats();
+            document.getElementById('statGamesPlayed').textContent = s.gamesPlayed;
+            document.getElementById('statHighScore').textContent = s.highScore;
+            document.getElementById('statLongestGame').textContent = s.longestGame + 's';
         }
 
-        function saveStats(stats) {
-            try {
-                localStorage.setItem('squaredStats', JSON.stringify(stats));
-            } catch (e) {
-                console.error('Error saving stats:', e);
-            }
-        }
-
-        function updateStats(finalScore, gameDuration) {
-            const stats = getStats();
-            stats.gamesPlayed++;
-            if (finalScore > stats.highScore) {
-                stats.highScore = finalScore;
-            }
-            if (gameDuration > stats.longestGame) {
-                stats.longestGame = gameDuration;
-            }
-            saveStats(stats);
-        }
-
-        function showTutorial(updateHash = true) {
-            document.getElementById('homeScreen').classList.remove('active');
-            document.getElementById('gameContainer').classList.remove('active');
-            document.getElementById('moreScreen').classList.remove('active');
-            document.getElementById('tutorialScreen').classList.add('active');
-            document.getElementById('statsScreen').classList.remove('active');
-            document.body.classList.add('game-active');
-            stopDecorativeTimer();
-            setActiveTutorialTab('basics');
-            if (updateHash) {
-                history.pushState(null, '', '#tutorial');
-            }
-        }
-
-        function showSettingsTab() {
-            document.querySelectorAll('.more-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('settingsTab').style.display = 'block';
-            document.getElementById('aboutTab').style.display = 'none';
-        }
-
-        function showAboutTab() {
-            document.querySelectorAll('.more-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('settingsTab').style.display = 'none';
-            document.getElementById('aboutTab').style.display = 'block';
-        }
-
-        function setActiveTutorialTab(tabKey) {
-            const tabs = document.querySelectorAll('.tutorial-tab');
-            tabs.forEach(tab => {
-                const isActive = tab.dataset.tab === tabKey;
-                tab.classList.toggle('active', isActive);
-            });
-
-            const panels = document.querySelectorAll('.tutorial-tab-panel');
-            panels.forEach(panel => {
-                const isActive = panel.dataset.tabPanel === tabKey;
-                panel.classList.toggle('active', isActive);
-                panel.style.display = isActive ? 'block' : 'none';
-            });
-
-            if (tabKey === 'basics') {
-                startTutorial();
-            } else {
-                stopTutorialAnimation();
-            }
-        }
-
+        // Theme selection
         function selectTheme(index) {
             selectedThemeIndex = index;
             currentColors = COLOR_THEMES[index];
-            // Update theme-option selected state
-            document.querySelectorAll('.theme-option').forEach((option, i) => {
-                if (i === index) {
-                    option.classList.add('selected');
-                    option.querySelector('.theme-radio').classList.add('selected');
-                } else {
-                    option.classList.remove('selected');
-                    option.querySelector('.theme-radio').classList.remove('selected');
-                }
+            document.querySelectorAll('.theme-option').forEach((o, i) => {
+                o.classList.toggle('selected', i === index);
+                o.querySelector('.theme-radio').classList.toggle('selected', i === index);
             });
         }
 
+        // Decorative squares animation
         function initDecorativeSquares() {
+            document.querySelectorAll('.decorative-pattern').forEach(p => {
+                p.innerHTML = '<div class="decorative-square"></div>'.repeat(4);
+            });
             decorativeSquares = Array.from(document.querySelectorAll('.decorative-square'));
             hiddenDecorativeSquares = [];
-            decorativeTimerCount = 0;
-            decorativeSquares.forEach(square => {
-                square.classList.remove('hidden');
-                square.dataset.visible = 'true';
-            });
+            decorativeSquares.forEach(s => { s.classList.remove('hidden'); s.dataset.visible = 'true'; });
         }
-
         function startDecorativeTimer() {
-            if (decorativeSquares.length === 0) {
-                initDecorativeSquares();
-            }
-            if (decorativeTimer) {
-                return;
-            }
-            decorativeTimer = setInterval(decorativeTimerTick, 750);
+            if (!decorativeSquares.length) initDecorativeSquares();
+            if (!decorativeTimer) decorativeTimer = setInterval(decorativeTimerTick, 750);
         }
-
-        function stopDecorativeTimer() {
-            if (decorativeTimer) {
-                clearInterval(decorativeTimer);
-                decorativeTimer = null;
-            }
-        }
-
-        function hideDecorativeSquare(square) {
-            if (!square || square.dataset.visible === 'false') {
-                return;
-            }
-            square.classList.add('hidden');
-            square.dataset.visible = 'false';
-            hiddenDecorativeSquares.push(square);
-        }
-
-        function showDecorativeSquare(square) {
-            if (!square) {
-                return;
-            }
-            square.classList.remove('hidden');
-            square.dataset.visible = 'true';
-        }
-
+        function stopDecorativeTimer() { if (decorativeTimer) { clearInterval(decorativeTimer); decorativeTimer = null; } }
         function decorativeTimerTick() {
-            if (decorativeSquares.length === 0) {
-                return;
+            if (!decorativeSquares.length) return;
+            let idx = Math.floor(Math.random() * decorativeSquares.length), sq = decorativeSquares[idx];
+            if (idx % 2 === 0) {
+                if (decorativeTimerCount % 2 === 0) { idx = idx === 0 ? Math.min(1, decorativeSquares.length - 1) : idx - 1; sq = decorativeSquares[idx]; decorativeTimerCount = 0; }
+                if (sq.dataset.visible === 'true') { sq.classList.add('hidden'); sq.dataset.visible = 'false'; hiddenDecorativeSquares.push(sq); }
+            } else if (hiddenDecorativeSquares.length) {
+                const next = hiddenDecorativeSquares.shift();
+                next.classList.remove('hidden'); next.dataset.visible = 'true';
             }
-
-            let index = Math.floor(Math.random() * decorativeSquares.length);
-            let square = decorativeSquares[index];
-
-            if (index % 2 === 0) {
-                if (decorativeTimerCount % 2 === 0) {
-                    if (index === 0) {
-                        index = Math.min(index + 1, decorativeSquares.length - 1);
-                    } else {
-                        index = index - 1;
-                    }
-                    square = decorativeSquares[index];
-                    decorativeTimerCount = 0;
-                }
-
-                if (square.dataset.visible === 'true') {
-                    hideDecorativeSquare(square);
-                }
-            } else {
-                if (hiddenDecorativeSquares.length > 0) {
-                    const next = hiddenDecorativeSquares.shift();
-                    showDecorativeSquare(next);
-                }
-            }
-
             decorativeTimerCount++;
         }
 
+        // Tutorial
         function startTutorial() {
             stopTutorialAnimation();
-
-            tutorialAnimationCount = 0;
-            tutorialPrevLeftX = -1;
-            tutorialPrevTopY = -1;
-            tutorialPrevRightX = -1;
-            tutorialInfiniteLoopIndex = 0;
-            tutorialPattern = [];
-            tutorialCurrentSolutionCoords = [];
-
-            tutorialGrid = [];
-            for (let i = 0; i < TUTORIAL_GRID_SIZE * TUTORIAL_GRID_SIZE; i++) {
-                tutorialGrid.push(currentColors[Math.floor(Math.random() * currentColors.length)]);
-            }
-
+            tutorialAnimationCount = 0; tutorialPrevCoords = { leftX: -1, topY: -1, rightX: -1 }; tutorialLoopIndex = 0;
+            tutorialPattern = []; tutorialCurrentSolutionCoords = [];
+            tutorialGrid = Array.from({ length: GRID_SIZE * GRID_SIZE }, () => currentColors[Math.floor(Math.random() * currentColors.length)]);
             renderTutorialGrid();
             tutorialPickSolution();
-
-            tutorialTimer = setInterval(() => {
-                tutorialPickSolution();
-            }, 4500);
+            tutorialTimer = setInterval(tutorialPickSolution, 4500);
         }
-
         function stopTutorialAnimation() {
-            if (tutorialTimer) {
-                clearInterval(tutorialTimer);
-                tutorialTimer = null;
-            }
-            tutorialAnimationCount = 0;
-            tutorialPrevLeftX = -1;
-            tutorialPrevTopY = -1;
-            tutorialPrevRightX = -1;
-            tutorialCurrentSolutionCoords = [];
-            if (tutorialSquares.length > 0) {
-                tutorialSquares.forEach(square => square.classList.remove('highlight'));
-            }
-            const message = document.getElementById('tutorialMessage');
-            if (message) {
-                message.style.opacity = 0;
-                message.textContent = '';
-            }
-            const patternElement = document.getElementById('tutorialPattern');
-            if (patternElement) {
-                patternElement.innerHTML = '';
-            }
+            if (tutorialTimer) { clearInterval(tutorialTimer); tutorialTimer = null; }
+            tutorialSquares.forEach(s => s.classList.remove('highlight'));
+            const msg = document.getElementById('tutorialMessage'), pat = document.getElementById('tutorialPattern');
+            if (msg) { msg.style.opacity = 0; msg.textContent = ''; }
+            if (pat) pat.innerHTML = '';
         }
-
         function renderTutorialGrid() {
-            const gridElement = document.getElementById('tutorialGrid');
-            if (!gridElement) {
-                return;
-            }
-            gridElement.innerHTML = '';
-            tutorialSquares = [];
-
-            tutorialGrid.forEach(color => {
-                const square = document.createElement('div');
-                square.className = 'tutorial-square';
-                square.style.backgroundColor = color;
-                gridElement.appendChild(square);
-                tutorialSquares.push(square);
+            const el = document.getElementById('tutorialGrid');
+            if (!el) return;
+            el.innerHTML = '';
+            tutorialSquares = tutorialGrid.map(c => {
+                const s = document.createElement('div');
+                s.className = 'tutorial-square'; s.style.backgroundColor = c;
+                el.appendChild(s); return s;
             });
         }
-
-        function renderTutorialPattern() {
-            const patternElement = document.getElementById('tutorialPattern');
-            if (!patternElement) {
-                return;
-            }
-            patternElement.innerHTML = '';
-            tutorialPattern.forEach(color => {
-                const square = document.createElement('div');
-                square.className = 'pattern-square';
-                square.style.backgroundColor = color;
-                patternElement.appendChild(square);
-            });
-        }
-
         function tutorialPickSolution() {
-            if (tutorialGrid.length === 0) {
-                return;
+            if (!tutorialGrid.length) return;
+            const sideLen = tutorialAnimationCount % 2 === 0 ? 0 : 2;
+            getNewPattern(GRID_SIZE, tutorialGrid, sideLen, tutorialPrevCoords, true);
+            renderPatternSquares('tutorialPattern', tutorialPattern);
+            tutorialSquares.forEach(s => s.classList.remove('highlight'));
+            tutorialCurrentSolutionCoords.forEach(i => tutorialSquares[i]?.classList.add('highlight'));
+            const msg = document.getElementById('tutorialMessage');
+            if (msg) {
+                msg.textContent = tutorialCurrentSolutionCoords.length ? (sideLen === 0 ? 'Equidistant squares make a larger outline.' : 'Grouped squares share edges.') : '';
+                msg.style.opacity = tutorialCurrentSolutionCoords.length ? 1 : 0;
             }
-
-            const sideLength = (tutorialAnimationCount % 2 === 0) ? 0 : 2;
-            tutorialGetNewPatternToSolve(sideLength);
-            renderTutorialPattern();
-            highlightTutorialSquares();
-            updateTutorialMessage(sideLength);
             tutorialAnimationCount++;
         }
 
-        function highlightTutorialSquares() {
-            if (tutorialSquares.length === 0) {
-                return;
-            }
-
-            tutorialSquares.forEach(square => square.classList.remove('highlight'));
-            tutorialCurrentSolutionCoords.forEach(index => {
-                if (tutorialSquares[index]) {
-                    tutorialSquares[index].classList.add('highlight');
-                }
-            });
-        }
-
-        function updateTutorialMessage(sideLength) {
-            const message = document.getElementById('tutorialMessage');
-            if (!message) {
-                return;
-            }
-
-            let text = '';
-            if (tutorialCurrentSolutionCoords.length === 0) {
-                message.style.opacity = 0;
-                message.textContent = text;
-                return;
-            }
-
-            if (sideLength === 0) {
-                text = 'Equidistant squares make a larger outline.';
-            } else {
-                text = 'Grouped squares share edges.';
-            }
-
-            message.textContent = text;
-            message.style.opacity = 1;
-        }
-
-        function tutorialGetNewPatternToSolve(sideLength) {
-            if (tutorialGrid.length !== TUTORIAL_GRID_SIZE * TUTORIAL_GRID_SIZE) {
-                tutorialPattern = [];
-                tutorialCurrentSolutionCoords = [];
-                return;
-            }
-
-            let internalSideLength = sideLength;
-            let startX = 0;
-            let startY = 0;
-            let leftX = 0;
-            let rightX = 0;
-            let topY = 0;
-            let bottomY = 0;
-            let shouldBreak = false;
-            let loopCount = 0;
-
-            do {
-                do {
-                    startX = randomIntInclusive(0, TUTORIAL_GRID_SIZE - 1);
-                    startY = randomIntInclusive(0, TUTORIAL_GRID_SIZE - 1);
-
-                    if (sideLength === -1) {
-                        internalSideLength = randomIntInclusive(1, Math.max(1, TUTORIAL_GRID_SIZE - startX - 1));
-                    } else if (sideLength === 0) {
-                        internalSideLength = randomIntInclusive(2, Math.max(2, TUTORIAL_GRID_SIZE - 2));
-                    } else {
-                        internalSideLength = 1;
-                    }
-
-                    const mitigation = tutorialInfiniteLoopMitigation(loopCount, {
-                        startX,
-                        startY,
-                        sideLength: internalSideLength,
-                        shouldBreak
-                    });
-                    startX = mitigation.startX;
-                    startY = mitigation.startY;
-                    internalSideLength = mitigation.sideLength;
-                    shouldBreak = mitigation.shouldBreak;
-
-                    if (!shouldBreak) {
-                        const xValues = getLeftAndRightXValues(startX, sideLength, internalSideLength);
-                        leftX = xValues.leftX;
-                        rightX = xValues.rightX;
-                        internalSideLength = xValues.sideLength;
-                    } else {
-                        const xValues = getLeftAndRightXValuesSimple(startX, internalSideLength);
-                        leftX = xValues.leftX;
-                        rightX = xValues.rightX;
-                    }
-
-                    const yValues = getTopAndBottomYValues(startY, internalSideLength);
-                    topY = yValues.topY;
-                    bottomY = yValues.bottomY;
-
-                    loopCount++;
-                } while (
-                    tutorialAreCoordinatesOutsideBounds(bottomY, rightX, leftX, topY) ||
-                    tutorialAreCoordinatesSameAsLastRound(leftX, topY, rightX)
-                );
-
-                const topLeftIdx = topY * TUTORIAL_GRID_SIZE + leftX;
-                const topRightIdx = topY * TUTORIAL_GRID_SIZE + rightX;
-                const bottomLeftIdx = bottomY * TUTORIAL_GRID_SIZE + leftX;
-                const bottomRightIdx = bottomY * TUTORIAL_GRID_SIZE + rightX;
-
-                if (!areOneOrMoreSquaresAnimating()) {
-                    tutorialInfiniteLoopIndex = 0;
-                    tutorialPrevLeftX = leftX;
-                    tutorialPrevTopY = topY;
-                    tutorialPrevRightX = rightX;
-
-                    tutorialPattern = [
-                        tutorialGrid[topLeftIdx],
-                        tutorialGrid[topRightIdx],
-                        tutorialGrid[bottomLeftIdx],
-                        tutorialGrid[bottomRightIdx]
-                    ];
-
-                    tutorialCurrentSolutionCoords = [topLeftIdx, topRightIdx, bottomLeftIdx, bottomRightIdx];
-                    return;
-                }
-            } while (true);
-        }
-
-        function tutorialInfiniteLoopMitigation(loopCount, state) {
-            let { startX, startY, sideLength, shouldBreak } = state;
-            if (loopCount !== 0 && loopCount % 5 === 0) {
-                shouldBreak = false;
-                switch (tutorialGetIndexForInfiniteLoopMitigationTechnique()) {
-                    case 0:
-                        startX = 0;
-                        startY = 0;
-                        break;
-                    case 1:
-                        startX = TUTORIAL_GRID_SIZE - 1;
-                        startY = 0;
-                        break;
-                    case 2:
-                        startX = 0;
-                        startY = TUTORIAL_GRID_SIZE - 1;
-                        break;
-                    case 3:
-                        startX = TUTORIAL_GRID_SIZE - 1;
-                        startY = TUTORIAL_GRID_SIZE - 1;
-                        break;
-                    case 4:
-                        startX = 0;
-                        startY = 0;
-                        sideLength = 1;
-                        break;
-                    case 5:
-                        startX = TUTORIAL_GRID_SIZE - 1;
-                        startY = 0;
-                        sideLength = 1;
-                        shouldBreak = true;
-                        break;
-                    case 6:
-                        startX = 0;
-                        startY = TUTORIAL_GRID_SIZE - 1;
-                        sideLength = 1;
-                        shouldBreak = true;
-                        break;
-                    case 7:
-                        startX = TUTORIAL_GRID_SIZE - 1;
-                        startY = TUTORIAL_GRID_SIZE - 1;
-                        sideLength = 1;
-                        shouldBreak = true;
-                        break;
-                    case 8:
-                        startX = Math.floor(TUTORIAL_GRID_SIZE / 2);
-                        startY = Math.floor(TUTORIAL_GRID_SIZE / 2);
-                        sideLength = 1;
-                        shouldBreak = true;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return { startX, startY, sideLength, shouldBreak };
-        }
-
-        function tutorialGetIndexForInfiniteLoopMitigationTechnique() {
-            const current = tutorialInfiniteLoopIndex;
-            tutorialInfiniteLoopIndex = tutorialInfiniteLoopIndex === 8 ? 0 : tutorialInfiniteLoopIndex + 1;
-            return current;
-        }
-
-        function tutorialAreCoordinatesOutsideBounds(bottomY, rightX, leftX, topY) {
-            return bottomY >= TUTORIAL_GRID_SIZE ||
-                rightX >= TUTORIAL_GRID_SIZE ||
-                leftX < 0 ||
-                topY < 0;
-        }
-
-        function tutorialAreCoordinatesSameAsLastRound(newLeftX, newTopY, newRightX) {
-            return newLeftX === tutorialPrevLeftX &&
-                newTopY === tutorialPrevTopY &&
-                newRightX === tutorialPrevRightX;
-        }
-
-        function showGame(updateHash = true) {
-            document.getElementById('homeScreen').classList.remove('active');
-            document.getElementById('moreScreen').classList.remove('active');
-            document.getElementById('tutorialScreen').classList.remove('active');
-            document.getElementById('statsScreen').classList.remove('active');
-            document.getElementById('gameContainer').classList.add('active');
-            document.body.classList.add('game-active');
-            stopDecorativeTimer();
-            stopTutorialAnimation();
-            startGame();
-            if (updateHash) {
-                history.pushState(null, '', '#play');
-            }
-        }
-
+        // Game
         function startGame() {
-            score = 0;
-            timeLeft = 60;
-            selectedSquares = [];
-            hintsRemaining = 5;
-            skipsRemaining = 5;
-            timePlussRemaining = 5;
-            prevLeftX = -1;
-            prevTopY = -1;
-            prevRightX = -1;
-            infiniteLoopMitigationIndex = 0;
-            currentSolutionCoords = [];
-            validSolutions = [];
+            score = 0; timeLeft = 60; selectedSquares = []; powerUps = { hints: 5, skips: 5, timePlus: 5 };
+            prevCoords = { leftX: -1, topY: -1, rightX: -1 }; loopIndex = 0; currentSolutionCoords = []; validSolutions = [];
             gameStartTime = Date.now();
-            
             document.getElementById('gameScreen').style.display = 'block';
             document.getElementById('gameOverScreen').style.display = 'none';
-            
-            updateDisplay();
-            generateLevel();
+            updateDisplay(); generateLevel();
         }
-
         function generateLevel() {
-            clearInterval(timer);
-            selectedSquares = [];
-            hintSquare = null;
-            timeLeft = 60;
-            
-            // Generate random grid
-            grid = [];
-            for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
-                grid.push(currentColors[Math.floor(Math.random() * currentColors.length)]);
-            }
-
-            // Generate pattern using board square corners
-            getNewPatternToSolve(-1);
-
-            renderGrid();
-            renderPattern();
-            updateDisplay();
-            startTimer();
+            clearInterval(timer); selectedSquares = []; hintSquare = null; timeLeft = 60;
+            grid = Array.from({ length: GRID_SIZE * GRID_SIZE }, () => currentColors[Math.floor(Math.random() * currentColors.length)]);
+            getNewPattern(GRID_SIZE, grid, -1, prevCoords, false);
+            renderGrid(); renderPatternSquares('pattern', pattern); updateDisplay();
+            timer = setInterval(() => { if (--timeLeft <= 0) gameOver(); updateDisplay(); }, 1000);
         }
 
-        // Port of Board.GetNewPatternToSolve from the original game to select square corners without repeats.
-        function getNewPatternToSolve(sideLength = -1) {
-            if (grid.length !== GRID_SIZE * GRID_SIZE) {
-                pattern = [];
-                currentSolutionCoords = [];
-                validSolutions = [];
-                return;
-            }
-
-            let internalSideLength = sideLength;
-            let startX = 0;
-            let startY = 0;
-            let leftX = 0;
-            let rightX = 0;
-            let topY = 0;
-            let bottomY = 0;
-            let shouldBreak = false;
-            let loopCount = 0;
-
+        // Unified pattern generation
+        function getNewPattern(size, gridArr, sideLen, prevCoordsObj, isTutorial) {
+            let internalLen = sideLen, startX, startY, leftX, rightX, topY, bottomY, shouldBreak = false, loopCount = 0;
             do {
                 do {
-                    startX = randomIntInclusive(0, GRID_SIZE - 1);
-                    startY = randomIntInclusive(0, GRID_SIZE - 1);
-
-                    if (sideLength === -1) {
-                        internalSideLength = randomIntInclusive(1, Math.max(1, GRID_SIZE - startX - 1));
-                    } else if (sideLength === 0) {
-                        internalSideLength = randomIntInclusive(2, Math.max(2, GRID_SIZE - 2));
-                    } else {
-                        internalSideLength = 1;
+                    startX = randInt(0, size - 1); startY = randInt(0, size - 1);
+                    internalLen = sideLen === -1 ? randInt(1, Math.max(1, size - startX - 1)) : sideLen === 0 ? randInt(2, Math.max(2, size - 2)) : 1;
+                    if (loopCount && loopCount % 5 === 0) {
+                        const idx = isTutorial ? tutorialLoopIndex : loopIndex;
+                        const mitResult = applyLoopMitigation(idx, size, startX, startY, internalLen);
+                        startX = mitResult.x; startY = mitResult.y; internalLen = mitResult.len; shouldBreak = mitResult.brk;
+                        if (isTutorial) tutorialLoopIndex = (tutorialLoopIndex + 1) % 9; else loopIndex = (loopIndex + 1) % 9;
                     }
-
-                    const mitigation = infiniteLoopMitigation(loopCount, {
-                        startX,
-                        startY,
-                        sideLength: internalSideLength,
-                        shouldBreak
-                    });
-                    startX = mitigation.startX;
-                    startY = mitigation.startY;
-                    internalSideLength = mitigation.sideLength;
-                    shouldBreak = mitigation.shouldBreak;
-
-                    if (!shouldBreak) {
-                        const xValues = getLeftAndRightXValues(startX, sideLength, internalSideLength);
-                        leftX = xValues.leftX;
-                        rightX = xValues.rightX;
-                        internalSideLength = xValues.sideLength;
-                    } else {
-                        const xValues = getLeftAndRightXValuesSimple(startX, internalSideLength);
-                        leftX = xValues.leftX;
-                        rightX = xValues.rightX;
-                    }
-
-                    const yValues = getTopAndBottomYValues(startY, internalSideLength);
-                    topY = yValues.topY;
-                    bottomY = yValues.bottomY;
-
+                    const xRes = getXValues(startX, sideLen, internalLen, size, shouldBreak);
+                    leftX = xRes.leftX; rightX = xRes.rightX; internalLen = xRes.len;
+                    const yRes = getYValues(startY, internalLen, size);
+                    topY = yRes.topY; bottomY = yRes.bottomY;
                     loopCount++;
-                } while (
-                    areCoordinatesOutsideBoundsOfBoard(bottomY, rightX, leftX, topY) ||
-                    areCoordinatesSameAsLastRound(leftX, topY, rightX)
-                );
-
-                const topLeftIdx = topY * GRID_SIZE + leftX;
-                const topRightIdx = topY * GRID_SIZE + rightX;
-                const bottomLeftIdx = bottomY * GRID_SIZE + leftX;
-                const bottomRightIdx = bottomY * GRID_SIZE + rightX;
-
-                if (!areOneOrMoreSquaresAnimating()) {
-                    infiniteLoopMitigationIndex = 0;
-                    prevLeftX = leftX;
-                    prevTopY = topY;
-                    prevRightX = rightX;
-
-                    pattern = [
-                        grid[topLeftIdx],
-                        grid[topRightIdx],
-                        grid[bottomLeftIdx],
-                        grid[bottomRightIdx]
-                    ];
-
-                    currentSolutionCoords = [topLeftIdx, topRightIdx, bottomLeftIdx, bottomRightIdx];
-                    validSolutions = [currentSolutionCoords.slice()];
-                    return;
-                }
+                } while (bottomY >= size || rightX >= size || leftX < 0 || topY < 0 || (leftX === prevCoordsObj.leftX && topY === prevCoordsObj.topY && rightX === prevCoordsObj.rightX));
+                
+                const tl = topY * size + leftX, tr = topY * size + rightX, bl = bottomY * size + leftX, br = bottomY * size + rightX;
+                prevCoordsObj.leftX = leftX; prevCoordsObj.topY = topY; prevCoordsObj.rightX = rightX;
+                const patArr = [gridArr[tl], gridArr[tr], gridArr[bl], gridArr[br]];
+                const coordsArr = [tl, tr, bl, br];
+                if (isTutorial) { tutorialPattern = patArr; tutorialCurrentSolutionCoords = coordsArr; }
+                else { pattern = patArr; currentSolutionCoords = coordsArr; validSolutions = [coordsArr.slice()]; }
+                return;
             } while (true);
         }
 
-        function randomIntInclusive(min, max) {
-            if (max < min) {
-                return min;
-            }
-            return Math.floor(Math.random() * (max - min + 1)) + min;
+        function applyLoopMitigation(idx, size, x, y, len) {
+            const half = Math.floor(size / 2), max = size - 1;
+            const configs = [[0,0,len,false],[max,0,len,false],[0,max,len,false],[max,max,len,false],[0,0,1,false],[max,0,1,true],[0,max,1,true],[max,max,1,true],[half,half,1,true]];
+            const c = configs[idx] || [x, y, len, false];
+            return { x: c[0], y: c[1], len: c[2], brk: c[3] };
         }
-
-        function infiniteLoopMitigation(loopCount, state) {
-            let { startX, startY, sideLength, shouldBreak } = state;
-            if (loopCount !== 0 && loopCount % 5 === 0) {
-                shouldBreak = false;
-                switch (getIndexForInfiniteLoopMitigationTechnique()) {
-                    case 0:
-                        startX = 0;
-                        startY = 0;
-                        break;
-                    case 1:
-                        startX = GRID_SIZE - 1;
-                        startY = 0;
-                        break;
-                    case 2:
-                        startX = 0;
-                        startY = GRID_SIZE - 1;
-                        break;
-                    case 3:
-                        startX = GRID_SIZE - 1;
-                        startY = GRID_SIZE - 1;
-                        break;
-                    case 4:
-                        startX = 0;
-                        startY = 0;
-                        sideLength = 1;
-                        break;
-                    case 5:
-                        startX = GRID_SIZE - 1;
-                        startY = 0;
-                        sideLength = 1;
-                        shouldBreak = true;
-                        break;
-                    case 6:
-                        startX = 0;
-                        startY = GRID_SIZE - 1;
-                        sideLength = 1;
-                        shouldBreak = true;
-                        break;
-                    case 7:
-                        startX = GRID_SIZE - 1;
-                        startY = GRID_SIZE - 1;
-                        sideLength = 1;
-                        shouldBreak = true;
-                        break;
-                    case 8:
-                        startX = Math.floor(GRID_SIZE / 2);
-                        startY = Math.floor(GRID_SIZE / 2);
-                        sideLength = 1;
-                        shouldBreak = true;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return { startX, startY, sideLength, shouldBreak };
+        function getXValues(startX, origLen, len, size, simple) {
+            let l, r, adj = Math.max(1, len);
+            if (size / 2 < startX) { r = startX; if (!simple && origLen === 0) while (r - adj < 0 && adj > 1) adj--; l = r - adj; }
+            else { l = startX; if (!simple && origLen === 0) while (l + adj >= size && adj > 1) adj--; r = l + adj; }
+            return { leftX: l, rightX: r, len: Math.max(1, adj) };
         }
-
-        function getIndexForInfiniteLoopMitigationTechnique() {
-            const current = infiniteLoopMitigationIndex;
-            infiniteLoopMitigationIndex = infiniteLoopMitigationIndex === 8 ? 0 : infiniteLoopMitigationIndex + 1;
-            return current;
+        function getYValues(startY, len, size) {
+            const adj = Math.max(1, len);
+            return size / 2 < startY ? { topY: startY - adj, bottomY: startY } : { topY: startY, bottomY: startY + adj };
         }
-
-        function getLeftAndRightXValues(startX, originalSideLength, sideLength) {
-            let leftX;
-            let rightX;
-            let adjustedSideLength = Math.max(1, sideLength);
-
-            if ((GRID_SIZE / 2) < startX) {
-                rightX = startX;
-                if (originalSideLength === 0) {
-                    while (rightX - adjustedSideLength < 0 && adjustedSideLength > 1) {
-                        adjustedSideLength--;
-                    }
-                }
-                leftX = rightX - adjustedSideLength;
-            } else {
-                leftX = startX;
-                if (originalSideLength === 0) {
-                    while (leftX + adjustedSideLength >= GRID_SIZE && adjustedSideLength > 1) {
-                        adjustedSideLength--;
-                    }
-                }
-                rightX = leftX + adjustedSideLength;
-            }
-
-            return {
-                leftX,
-                rightX,
-                sideLength: Math.max(1, adjustedSideLength)
-            };
-        }
-
-        function getLeftAndRightXValuesSimple(startX, sideLength) {
-            const adjustedSideLength = Math.max(1, sideLength);
-            if ((GRID_SIZE / 2) < startX) {
-                const rightX = startX;
-                const leftX = rightX - adjustedSideLength;
-                return { leftX, rightX };
-            }
-            const leftX = startX;
-            const rightX = leftX + adjustedSideLength;
-            return { leftX, rightX };
-        }
-
-        function getTopAndBottomYValues(startY, sideLength) {
-            const adjustedSideLength = Math.max(1, sideLength);
-            if ((GRID_SIZE / 2) < startY) {
-                const bottomY = startY;
-                const topY = bottomY - adjustedSideLength;
-                return { topY, bottomY };
-            }
-            const topY = startY;
-            const bottomY = topY + adjustedSideLength;
-            return { topY, bottomY };
-        }
-
-        function areCoordinatesOutsideBoundsOfBoard(bottomY, rightX, leftX, topY) {
-            return bottomY >= GRID_SIZE ||
-                rightX >= GRID_SIZE ||
-                leftX < 0 ||
-                topY < 0;
-        }
-
-        function areCoordinatesSameAsLastRound(newLeftX, newTopY, newRightX) {
-            return newLeftX === prevLeftX &&
-                newTopY === prevTopY &&
-                newRightX === prevRightX;
-        }
-
-        function areOneOrMoreSquaresAnimating() {
-            return false;
-        }
+        function randInt(min, max) { return max < min ? min : Math.floor(Math.random() * (max - min + 1)) + min; }
 
         function renderGrid() {
-            const gridElement = document.getElementById('grid');
-            gridElement.innerHTML = '';
-            
-            grid.forEach((color, index) => {
-                const square = document.createElement('div');
-                square.className = 'square';
-                square.style.backgroundColor = color;
-                square.dataset.index = index;
-                square.onclick = () => selectSquare(index);
-                gridElement.appendChild(square);
+            const el = document.getElementById('grid');
+            el.innerHTML = '';
+            grid.forEach((c, i) => {
+                const s = document.createElement('div');
+                s.className = 'square'; s.style.backgroundColor = c; s.dataset.index = i;
+                s.onclick = () => selectSquare(i);
+                el.appendChild(s);
             });
         }
-
-        function renderPattern() {
-            const patternElement = document.getElementById('pattern');
-            patternElement.innerHTML = '';
-            
-            pattern.forEach(color => {
-                const square = document.createElement('div');
-                square.className = 'pattern-square';
-                square.style.backgroundColor = color;
-                patternElement.appendChild(square);
-            });
+        function renderPatternSquares(id, arr) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.innerHTML = '';
+            arr.forEach(c => { const s = document.createElement('div'); s.className = 'pattern-square'; s.style.backgroundColor = c; el.appendChild(s); });
         }
-
-        function selectSquare(index) {
-            if (selectedSquares.includes(index)) {
-                selectedSquares = selectedSquares.filter(i => i !== index);
-            } else if (selectedSquares.length < 4) {
-                selectedSquares.push(index);
-            }
-            
-            updateSquareDisplay();
-            updateDisplay();
-            
-            if (selectedSquares.length === 4) {
-                checkSolution();
-            }
+        function selectSquare(i) {
+            selectedSquares = selectedSquares.includes(i) ? selectedSquares.filter(x => x !== i) : selectedSquares.length < 4 ? [...selectedSquares, i] : selectedSquares;
+            updateSquareDisplay(); updateDisplay();
+            if (selectedSquares.length === 4) checkSolution();
         }
-
         function updateSquareDisplay() {
-            document.querySelectorAll('.square').forEach(square => {
-                const index = parseInt(square.dataset.index);
-                square.classList.remove('selected', 'hint');
-                if (selectedSquares.includes(index)) {
-                    square.classList.add('selected');
-                } else if (hintSquare === index) {
-                    square.classList.add('hint');
-                }
+            document.querySelectorAll('.square').forEach(s => {
+                const i = +s.dataset.index;
+                s.classList.toggle('selected', selectedSquares.includes(i));
+                s.classList.toggle('hint', hintSquare === i);
             });
         }
-
         function checkSolution() {
-            if (selectedSquares.length !== 4) return;
-            
-            // Get positions and colors of selected squares
-            const positions = selectedSquares.map(idx => ({
-                idx: idx,
-                row: Math.floor(idx / GRID_SIZE),
-                col: idx % GRID_SIZE,
-                color: grid[idx]
-            }));
-            
-            // Sort positions to get top-left, top-right, bottom-left, bottom-right order
-            positions.sort((a, b) => {
-                if (a.row !== b.row) return a.row - b.row; // Sort by row first
-                return a.col - b.col; // Then by column
-            });
-            
-            // Pattern array is: [top-left, top-right, bottom-left, bottom-right]
-            // So we need to reorder sorted positions to match this pattern layout
-            const topLeft = positions[0];
-            const topRight = positions[1];
-            const bottomLeft = positions[2];
-            const bottomRight = positions[3];
-            
-            // Check if colors match the pattern in the correct positions
-            const colorsMatch = 
-                grid[topLeft.idx] === pattern[0] &&
-                grid[topRight.idx] === pattern[1] &&
-                grid[bottomLeft.idx] === pattern[2] &&
-                grid[bottomRight.idx] === pattern[3];
-            
-            if (!colorsMatch) {
-                // Subtle shake on wrong squares
-                selectedSquares.forEach(idx => {
-                    const square = document.querySelector(`[data-index="${idx}"]`);
-                    square.classList.add('wrong');
-                    setTimeout(() => square.classList.remove('wrong'), 400);
-                });
-                
-                setTimeout(() => {
-                    selectedSquares = [];
-                    updateSquareDisplay();
-                    updateDisplay();
-                }, 50);
-                return;
+            const pos = selectedSquares.map(i => ({ i, row: Math.floor(i / GRID_SIZE), col: i % GRID_SIZE })).sort((a, b) => a.row - b.row || a.col - b.col);
+            const [tl, tr, bl, br] = pos;
+            if (grid[tl.i] !== pattern[0] || grid[tr.i] !== pattern[1] || grid[bl.i] !== pattern[2] || grid[br.i] !== pattern[3]) {
+                shakeSquares(); return;
             }
-            
-            // Check if it's a valid solution ( equidistant)
-            const isValid = isEquidistant(topLeft, topRight, bottomLeft, bottomRight);
-            
-            if (isValid) {
+            const dx1 = tr.col - tl.col, dx2 = br.col - bl.col, dy1 = bl.row - tl.row, dy2 = br.row - tr.row;
+            if (dx1 === dx2 && dy1 === dy2 && dx1 === dy1) {
                 showMessage('Perfect! ✓', 'success');
-                const points = 4; // 1 points per square
-                // TODO - apply multiplier
-                score += points; 
-                
-                setTimeout(() => {
-                    showMessage('', '');
-                    generateLevel();
-                }, 300);
-            } else {
-                // Subtle shake on wrong pattern type
-                selectedSquares.forEach(idx => {
-                    const square = document.querySelector(`[data-index="${idx}"]`);
-                    square.classList.add('wrong');
-                    setTimeout(() => square.classList.remove('wrong'), 400);
-                });
-                
-                setTimeout(() => {
-                    selectedSquares = [];
-                    updateSquareDisplay();
-                    updateDisplay();
-                }, 500);
-            }
+                score += 4;
+                setTimeout(() => { showMessage('', ''); generateLevel(); }, 300);
+            } else shakeSquares();
         }
-
-        function isEquidistant(topLeft, topRight, bottomLeft, bottomRight) {
-            if (!topLeft || !topRight || !bottomLeft || !bottomRight) return false;
-          
-            /* TODO - fix the bug in isEquidistant*/
-            // Calculate distances
-            // 0 and 1 are row one
-            // 2 and 3 are row two
-            const deltaTopRightToTopLeft = topRight.col - topLeft.col;
-            const deltaBottomRightToBottomLeft = bottomRight.col - bottomLeft.col;
-            const deltaBottomLeftToTopLeft = bottomLeft.row - topLeft.row;
-            const deltaBottomRightToTopRight = bottomRight.row - topRight.row;
-
-            return (deltaTopRightToTopLeft === deltaBottomRightToBottomLeft) &&
-                   (deltaBottomLeftToTopLeft === deltaBottomRightToTopRight &&
-                     (deltaTopRightToTopLeft === deltaBottomLeftToTopLeft));
+        function shakeSquares() {
+            selectedSquares.forEach(i => {
+                const s = document.querySelector(`[data-index="${i}"]`);
+                s.classList.add('wrong'); setTimeout(() => s.classList.remove('wrong'), 400);
+            });
+            setTimeout(() => { selectedSquares = []; updateSquareDisplay(); updateDisplay(); }, 50);
         }
-
-        function resetSelection() {
-            selectedSquares = [];
-            updateSquareDisplay();
-            updateDisplay();
-            showMessage('', '');
-        }
-
-        function startTimer() {
-            timer = setInterval(() => {
-                timeLeft--;
-                updateDisplay();
-                                               
-                if (timeLeft <= 0) {
-                    gameOver();
-                }
-            }, 1000);
-        }
-
-        function showHint() {
-            // Pick a random valid solution and highlight the first square
-            const randomSolution = validSolutions[Math.floor(Math.random() * validSolutions.length)];
-            hintSquare = randomSolution[0];
-            console.log('Hint square:', hintSquare, 'from solution:', randomSolution);
-            updateSquareDisplay();
-        }
-
         function gameOver() {
             clearInterval(timer);
             document.getElementById('gameScreen').style.display = 'none';
             document.getElementById('gameOverScreen').style.display = 'block';
             document.getElementById('finalScore').textContent = score;
-            
-            // Calculate game duration and update stats
-            const gameDuration = gameStartTime ? Math.floor((Date.now() - gameStartTime) / 1000) : 0;
-            updateStats(score, gameDuration);
+            const dur = gameStartTime ? Math.floor((Date.now() - gameStartTime) / 1000) : 0;
+            const s = getStats();
+            s.gamesPlayed++; s.highScore = Math.max(s.highScore, score); s.longestGame = Math.max(s.longestGame, dur);
+            saveStats(s);
         }
-
         function showMessage(text, type) {
-            const messageEl = document.getElementById('message');
-            if (text) {
-                messageEl.textContent = text;
-                messageEl.className = 'message ' + type + ' show';
-            } else {
-                messageEl.classList.remove('show');
-                setTimeout(() => {
-                    messageEl.textContent = '';
-                    messageEl.className = 'message';
-                }, 300);
-            }
+            const el = document.getElementById('message');
+            if (text) { el.textContent = text; el.className = 'message ' + type + ' show'; }
+            else { el.classList.remove('show'); setTimeout(() => { el.textContent = ''; el.className = 'message'; }, 300); }
         }
-
         function updateDisplay() {
             document.getElementById('timer').textContent = timeLeft;
             document.getElementById('score').textContent = score;
-            document.getElementById('hintsCount').textContent = hintsRemaining;
-            document.getElementById('skipsCount').textContent = skipsRemaining;
-            document.getElementById('timePlussCount').textContent = timePlussRemaining;
-            
-            // Update border visibility based on remaining counts
-            const hintsAction = document.getElementById('hintsAction');
-            const skipsAction = document.getElementById('skipsAction');
-            const timePlussAction = document.getElementById('timePlussAction');
-            
-            if (hintsRemaining === 0) {
-                hintsAction.classList.add('depleted');
-            } else {
-                hintsAction.classList.remove('depleted');
-            }
-            
-            if (skipsRemaining === 0) {
-                skipsAction.classList.add('depleted');
-            } else {
-                skipsAction.classList.remove('depleted');
-            }
-            
-            if (timePlussRemaining === 0) {
-                timePlussAction.classList.add('depleted');
-            } else {
-                timePlussAction.classList.remove('depleted');
-            }
+            ['hints', 'skips', 'timePlus'].forEach(k => {
+                const id = k === 'timePlus' ? 'timePlusCount' : k + 'Count';
+                document.getElementById(id).textContent = powerUps[k];
+                document.getElementById(k === 'timePlus' ? 'timePlusAction' : k + 'Action').classList.toggle('depleted', powerUps[k] === 0);
+            });
         }
-
-        function useHint() {
-            if (hintsRemaining > 0 && validSolutions.length > 0) {
-                hintsRemaining--;
-                const randomSolution = validSolutions[Math.floor(Math.random() * validSolutions.length)];
-                hintSquare = randomSolution[0];
+        function usePowerUp(type) {
+            if (powerUps[type] <= 0) return;
+            powerUps[type]--;
+            if (type === 'hints' && validSolutions.length) {
+                hintSquare = validSolutions[Math.floor(Math.random() * validSolutions.length)][0];
                 updateSquareDisplay();
-                updateDisplay();
-                
-                // Clear hint after 3 seconds
-                setTimeout(() => {
-                    hintSquare = null;
-                    updateSquareDisplay();
-                }, 3000);
-            }
+                setTimeout(() => { hintSquare = null; updateSquareDisplay(); }, 3000);
+            } else if (type === 'skips') generateLevel();
+            else if (type === 'timePlus') timeLeft += 10;
+            updateDisplay();
         }
 
-        function useSkip() {
-            if (skipsRemaining > 0) {
-                skipsRemaining--;
-                
-                updateDisplay();
-                generateLevel();
-            }
-        }
-
-        function usetimePlus() {
-            if (timePlussRemaining > 0) {
-                timePlussRemaining--;
-                timeLeft += 10; // Add 10 seconds
-                updateDisplay();
-            }
-        }
-
+        // Hash routing
         function handleHashChange() {
-            const hash = window.location.hash;
-            switch (hash) {
-                case '#play':
-                    showGame(false);
-                    break;
-                case '#tutorial':
-                    showTutorial(false);
-                    break;
-                case '#more':
-                    showMore(false);
-                    break;
-                case '#stats':
-                    showStats(false);
-                    break;
-                default:
-                    showHome(false);
-                    break;
-            }
+            const h = window.location.hash.slice(1);
+            showScreen(h === 'play' ? 'game' : SCREENS.includes(h) ? h : 'home', false);
+        }
+
+        // Initialize UI
+        function initUI() {
+            // Menu buttons
+            const menuItems = [{ name: 'Play', screen: 'game' }, { name: 'Stats', screen: 'stats' }, { name: 'Tutorial', screen: 'tutorial' }, { name: 'More', screen: 'more' }];
+            document.getElementById('mainMenu').innerHTML = menuItems.map(m => 
+                `<button class="menu-button" onclick="showScreen('${m.screen}')"><div class="menu-icon">${'<div class="menu-icon-square"></div>'.repeat(4)}</div>${m.name}</button>`
+            ).join('');
+            
+            // Tutorial tabs
+            document.getElementById('tutorialTabs').innerHTML = ['basics', 'extras'].map(t => 
+                `<button class="tab${t === 'basics' ? ' active' : ''}" data-tab="${t}" onclick="setActiveTab('tutorialTabs','${t}')">${t}</button>`
+            ).join('');
+            
+            // Tutorial packs
+            const packs = [
+                { title: 'Hints', desc: 'Reveal a square within the current pattern so you can lock in on the right spot faster.' },
+                { title: 'Skips', desc: 'Move on to a brand new pattern with no penalty if the current board feels tricky.' },
+                { title: 'Time +', desc: 'Pause the countdown timer long enough to finish the pattern without pressure.' }
+            ];
+            document.getElementById('tutorialPacks').innerHTML = packs.map(p => 
+                `<div class="tutorial-pack"><div class="tutorial-pack-title">${p.title}</div><div class="tutorial-pack-description">${p.desc}</div></div>`
+            ).join('');
+            
+            // More tabs
+            document.getElementById('moreTabs').innerHTML = ['settings', 'about'].map(t => 
+                `<button class="tab${t === 'settings' ? ' active' : ''}" data-tab="${t}" onclick="setActiveTab('moreTabs','${t}')">${t}</button>`
+            ).join('');
+            
+            // Theme options
+            document.getElementById('themeOptions').innerHTML = COLOR_THEMES.map((theme, i) => 
+                `<div class="theme-option${i === 0 ? ' selected' : ''}" data-theme="${i}" onclick="selectTheme(${i})">
+                    <div class="theme-preview">${theme.map(c => `<div class="theme-color" style="background:${c}"></div>`).join('')}</div>
+                    <div class="theme-radio${i === 0 ? ' selected' : ''}"></div>
+                </div>`
+            ).join('');
         }
 
         window.addEventListener('hashchange', handleHashChange);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initDecorativeSquares();
-            handleHashChange();
-        });
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch((error) => {
-                    console.error('Service worker registration failed:', error);
-                });
-            });
-        }
+        document.addEventListener('DOMContentLoaded', () => { initUI(); initDecorativeSquares(); handleHashChange(); });
+        if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(e => console.error('SW failed:', e)));
     </script>
 </body>
 </html>
