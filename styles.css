@@ -1,30 +1,73 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-#screens { position: relative; width: 100%; max-width: 650px; min-height: 100vh; }
-
-.screen {
-    position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh;
-    opacity: 0; visibility: hidden; transform: translateX(20px);
-    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-    background: #ffffff; z-index: 1;
+html, body {
+    height: 100%;
+    min-height: 100%;
+    min-height: -webkit-fill-available;
 }
-.screen.active { opacity: 1; visibility: visible; transform: translateX(0); z-index: 10; }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f5f5f5; display: flex; justify-content: center; min-height: 100vh;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
 }
 body.game-active { align-items: center; }
 
+#screens {
+    position: relative;
+    width: 100%;
+    max-width: 650px;
+    height: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow: hidden;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 1;
+}
+
+.screen.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+    z-index: 10;
+}
+
 /* Shared screen wrapper styles */
 .screen-wrapper, .game-screen {
-    display: flex; flex-direction: column; align-items: center; padding: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
 }
 .screen-wrapper .screen-header, .screen-wrapper .screen-content,
 .game-screen .screen-header, .game-screen .screen-content {
     width: 100%; max-width: 500px;
 }
-.screen-wrapper.active, .game-screen.active { display: flex; }
+.screen-wrapper.active, .game-screen.active {
+    display: flex;
+}
 
 .screen-header {
     display: flex; align-items: center; padding: 15px 20px; gap: 15px;
@@ -117,8 +160,14 @@ body.game-active { align-items: center; }
 
 /* Home Screen */
 .home-screen {
-    text-align: center; color: #333; display: flex; flex-direction: column;
-    align-items: center; justify-content: flex-start; padding-top: 35%; overflow: hidden;
+    text-align: center;
+    color: #333;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 35%;
+    overflow: hidden;
     background: #f5f5f5;
 }
 .home-screen.active { display: flex; }
