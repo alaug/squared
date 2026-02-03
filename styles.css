@@ -219,11 +219,11 @@ body.game-active { align-items: center; }
     position: absolute; display: grid; grid-template-columns: repeat(2, 30px); grid-template-rows: repeat(2, 30px); gap: 3px; opacity: 0.5;
 }
 .decorative-pattern.top-right { top: -5%; right: 10%; grid-template-columns: repeat(2, 15px); grid-template-rows: repeat(2, 15px); transform: translate(60%, -40%); opacity: 0.8; }
-.decorative-pattern.top-right-small { top: -5%; right: 75%; grid-template-columns: repeat(2, 10px); grid-template-rows: repeat(2, 10px); transform: translate(50%, -60%); opacity: 0.7; }
+.decorative-pattern.top-right-small { top: -10%; right: 85%; grid-template-columns: repeat(2, 10px); grid-template-rows: repeat(2, 10px); transform: translate(50%, -60%); opacity: 0.7; }
 .decorative-pattern.middle-left { top: 35%; left: 0%; grid-template-columns: repeat(2, 15px); grid-template-rows: repeat(2, 15px); transform: translate(-60%, -40%); opacity: 0.6; }
-.decorative-pattern.middle-right { top: 55%; right: 2%; grid-template-columns: repeat(2, 10px); grid-template-rows: repeat(2, 10px); transform: translate(60%, -40%); }
-.decorative-pattern.bottom-left { bottom: 12%; left: 2%; grid-template-columns: repeat(2, 15px); grid-template-rows: repeat(2, 15px); transform: translate(-60%, 40%); }
-.decorative-pattern.bottom-left-small { bottom: 0; left: 28%; grid-template-columns: repeat(2, 8px); grid-template-rows: repeat(2, 8px); transform: translate(-50%, 60%); opacity: 0.9; }
+.decorative-pattern.middle-right { top: 55%; right: 1%; grid-template-columns: repeat(2, 10px); grid-template-rows: repeat(2, 10px); transform: translate(60%, -40%); }
+.decorative-pattern.bottom-left { bottom: 22%; left: -2%; grid-template-columns: repeat(2, 15px); grid-template-rows: repeat(2, 15px); transform: translate(-60%, 40%); }
+.decorative-pattern.bottom-left-small { bottom: 0; left: 38%; grid-template-columns: repeat(2, 8px); grid-template-rows: repeat(2, 8px); transform: translate(-50%, 60%); opacity: 0.9; }
 .decorative-pattern.bottom-right { bottom: 0; right: 2%; grid-template-columns: repeat(2, 20px); grid-template-rows: repeat(2, 20px); transform: translate(50%, 60%); }
 .decorative-square { background: #bae1ff; border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease; }
 .decorative-square.hidden { transform: scale(0); opacity: 0; }
