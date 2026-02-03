@@ -1,4 +1,4 @@
-const CACHE_NAME = 'squared-cache-v2';
+const CACHE_NAME = 'squared-cache-v1.2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
