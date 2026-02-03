@@ -435,7 +435,7 @@
             // Menu buttons
             const menuItems = [{ name: 'Play', screen: 'game' }, { name: 'Stats', screen: 'stats' }, { name: 'Tutorial', screen: 'tutorial' }, { name: 'More', screen: 'more' }];
             document.getElementById('mainMenu').innerHTML = menuItems.map(m => 
-                `<button class="menu-button" onclick="showScreen('${m.screen}')"><div class="menu-icon">${'<div class="menu-icon-square"></div>'.repeat(4)}</div>${m.name}</button>`
+                `<button class="menu-button" onclick="showScreen('${m.screen}')"><div class="menu-icon"></div>${m.name}</button>`
             ).join('');
             
             // Tutorial tabs
